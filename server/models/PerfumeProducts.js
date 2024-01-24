@@ -7,6 +7,7 @@ const perfumeSchema = new Schema({
   price: Number,
   discountedPrice: Number,
   description: String,
+  image: String,
 });
 
 const Perfume = mongoose.model("Perfume", perfumeSchema);

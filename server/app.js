@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cleaningRoutes from "./routes/cleaningRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 const app = express();
 const PORT = 3000;
@@ -16,6 +17,8 @@ mongoose
 
 app.use(express.json());
 app.use("/product", cleaningRoutes);
+app.use("/user/admin", adminRoutes);
+
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
 });

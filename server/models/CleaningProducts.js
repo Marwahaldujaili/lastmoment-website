@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 
 const cleaningProductSchema = new Schema(
   {
-    productName: { type: String, required: true },
+    productName: { type: String, required: true, unique: true },
     scent: String,
     capacity: String,
     quantity: Number,
@@ -12,7 +12,7 @@ const cleaningProductSchema = new Schema(
     image: String,
   },
   {
-    versionKey: false, // Set versionKey to false to disable the __v field
+    versionKey: false,
   }
 );
 

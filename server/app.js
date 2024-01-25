@@ -19,7 +19,7 @@ mongoose
   .catch((err) => console.log(err.message));
 
 app.use(express.json());
-app.use("/product", cleaningRoutes);
+app.use("/product/cleaning", cleaningRoutes);
 app.use("/user/admin", adminRoutes);
 
 app.listen(PORT, () => {

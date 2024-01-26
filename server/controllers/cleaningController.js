@@ -31,6 +31,19 @@ export const createCleaningProduct = async (req, res) => {
   }
 };
 
+// View all cleaning Products
+export const viewAllCleaning = async (req, res) => {
+  try {
+    // Retrieve all cleaning products from the database
+    const allCleaning = await CleaningProduct.find();
+
+    res.status(200).json({ success: true, data: allCleaning });
+  } catch (error) {
+    console.error("Error retrieving perfume products:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
 // Get/View Single Cleaning Product Controller
 export const getSingleCleaningProduct = async (req, res) => {
   try {

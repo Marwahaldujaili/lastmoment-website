@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cleaningRoutes from "./routes/cleaningRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import perfumeRoutes from "./routes/perfumeRoutes.js";
 
 const app = express();
 app.use(cookieParser()); // Add this line to use cookie-parser middleware
@@ -20,6 +21,7 @@ mongoose
 
 app.use(express.json());
 app.use("/product/cleaning", cleaningRoutes);
+app.use("/product/perfume", perfumeRoutes);
 app.use("/user/admin", adminRoutes);
 
 app.listen(PORT, () => {

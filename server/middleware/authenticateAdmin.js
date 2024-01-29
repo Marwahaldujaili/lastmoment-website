@@ -10,12 +10,12 @@ const authenticateAdmin = async (req, res, next) => {
     const decodedToken = jwt.verify(token, "yourSecretKey");
 
     // Check if the decoded token contains user information
-    if (decodedToken && decodedToken.userId) {
+    if (decodedToken && decodedToken.email) {
       // Fetch the user from the database
-      const admin = await Admin.findById(decodedToken.userId);
+      const admin = await Admin.findOne({ email: decodedToken.email });
 
       // Check if the user exists and has admin privileges
-      if (admin && admin.role === "admin") {
+      if (admin) {
         // Attach the user information to the request object
         req.admin = admin;
         next();

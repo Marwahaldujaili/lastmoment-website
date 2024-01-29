@@ -4,11 +4,12 @@ import cookieParser from "cookie-parser";
 import cleaningRoutes from "./routes/cleaningRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import perfumeRoutes from "./routes/perfumeRoutes.js";
+import cors from "cors";
 
 const app = express();
 app.use(cookieParser()); // Add this line to use cookie-parser middleware
-
-const PORT = 3000;
+app.use(cors());
+const PORT = 5000;
 const DB_URI =
   "mongodb+srv://marwah:mad1983bremen@mad.c3dwjnj.mongodb.net/lastmoment";
 

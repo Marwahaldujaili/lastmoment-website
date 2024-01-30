@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post("/newadmin", registerNewAdmin);
 router.get("/confirm/:token", getConfirmation);
-router.get("/adminlogin", loginAdmin);
+router.post("/adminlogin", loginAdmin);
 router.put("/edit", authenticateAdmin, editAdmin);
 router.put("/changepassword", authenticateAdmin, changeAdminPassword);
 

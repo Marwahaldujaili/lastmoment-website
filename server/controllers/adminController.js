@@ -6,6 +6,7 @@ import { sendConfirmationEmail } from "../middleware/sendConfirmationEmail.js";
 const CONFIRMATION_SECRET = "askmeifyouwannaknow";
 const FRONT_END_URL = "http://localhost:3000";
 
+//register new admin
 export const registerNewAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -60,7 +61,7 @@ export const registerNewAdmin = async (req, res) => {
   }
 };
 
-//////
+// confirm
 export const getConfirmation = async (req, res) => {
   try {
     const token = req.params.token;
@@ -92,7 +93,7 @@ export const getConfirmation = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
-///
+// login
 
 export const loginAdmin = async (req, res) => {
   try {
@@ -137,8 +138,37 @@ export const loginAdmin = async (req, res) => {
   }
 };
 
-///
+// view admin profile
+export const viewAdminProfile = async (req, res) => {
+  try {
+    const adminId = req.admin._id;
+    //find admin
 
+    const admin = await Admin.findById(adminId);
+    if (!admin) {
+      return res.status(404).json({ success: false, error: "Admin not found" });
+    }
+    res.status(200).json({ success: true, data: admin });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, error: "internal server error" });
+  }
+};
+//logout
+export const logoutAdmin = (req, res) => {
+  try {
+    // Clear the JWT cookie to log out the admin
+    res.clearCookie("jwt", { httpOnly: true, secure: true });
+
+    res
+      .status(200)
+      .json({ success: true, message: "Admin logged out successfully" });
+  } catch (error) {
+    console.error("Error logging out admin:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+// edit
 export const editAdmin = async (req, res) => {
   try {
     const { email } = req.admin; // Assuming the email is used as a unique identifier

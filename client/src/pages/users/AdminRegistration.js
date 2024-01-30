@@ -15,6 +15,7 @@ function AdminRegistration() {
 
     setFormData({ ...formData, [name]: value });
   };
+  const [confirmationMessage, setConfirmationMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +30,10 @@ function AdminRegistration() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Admin registered successfully:", data);
+        setConfirmationMessage(
+          "Registration successful. Please check your email for confirmation."
+        );
+        // console.log("Admin registered successfully:", data);
         // Optionally, you can redirect the user to another page or show a success message.
       } else {
         console.error("Error registering admin:", data.error);
@@ -43,6 +47,8 @@ function AdminRegistration() {
   return (
     <div>
       <h1>Admin registration</h1>
+      {confirmationMessage && <p>{confirmationMessage}</p>}
+
       <form onSubmit={handleSubmit}>
         <label>
           Email

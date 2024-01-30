@@ -1,6 +1,10 @@
 import Admin from "../models/Admin.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { sendConfirmationEmail } from "../middleware/sendConfirmationEmail.js";
+
+const CONFIRMATION_SECRET = "askmeifyouwannaknow";
+const FRONT_END_URL = "http://localhost:3000";
 
 export const registerNewAdmin = async (req, res) => {
   try {
@@ -17,25 +21,34 @@ export const registerNewAdmin = async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new admin user
+    // confirmation
+
+    const confirmationToken = jwt.sign({ email }, CONFIRMATION_SECRET, {
+      expiresIn: "1h",
+    });
+    // Create a new admin user with unconfirmed status
     const newAdmin = new Admin({
       email,
       password: hashedPassword,
+      confirmed: false,
+      confirmationToken,
     });
     // Save the new admin user to the database
     await newAdmin.save();
+    // Send confirmation email
+    sendConfirmationEmail(email, confirmationToken); // Pass email and confirmationToken as arguments
     // Generate JWT token
     const token = jwt.sign(
       { userId: newAdmin._id, email: newAdmin.email },
-      "yourSecretKey", //change and place it in env
+      "askmeifyouwannaknow", //change and place it in env
       {
         expiresIn: "1h", // Token expiration time
       }
     );
     // Set the token as a cookie in the response
     res.cookie("jwt", token, {
-      httpOnly: true, // Cookie is only accessible through HTTP(S) requests
-      maxAge: 3600000, // Token expiration time in milliseconds (1 hour in this example)
+      httpOnly: true,
+      maxAge: 3600000, // (1 hour)
       secure: true, //process.env.NODE_ENV === "production", // Only send the cookie over HTTPS in production
     });
 
@@ -48,6 +61,38 @@ export const registerNewAdmin = async (req, res) => {
 };
 
 //////
+export const getConfirmation = async (req, res) => {
+  try {
+    const token = req.params.token;
+    console.log("Received confirmation token:", token);
+
+    // Verify the token
+    const decoded = jwt.verify(token, CONFIRMATION_SECRET);
+    console.log("Decoded token:", decoded);
+    const email = decoded.email;
+
+    // Find the admin in the database using the email
+    const admin = await Admin.findOne({ email });
+
+    if (!admin) {
+      console.error("Admin not found");
+
+      return res.status(404).json({ success: false, error: "Admin not found" });
+    }
+    // Update the confirmed status to true
+    admin.confirmed = true;
+    await admin.save();
+    console.log("Admin confirmed:", admin);
+
+    // Redirect to the login page after successful confirmation
+    res.redirect(`${FRONT_END_URL}`);
+  } catch (error) {
+    console.error("Error confirming email:", error);
+    // Handle token verification errors or other issues
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+///
 
 export const loginAdmin = async (req, res) => {
   try {

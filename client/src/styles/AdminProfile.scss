@@ -1,0 +1,31 @@
+@import "./base";
+
+.profile-container {
+  h1 {
+    @include pageHeader;
+  }
+  text-align: center;
+  p {
+    font-size: medium;
+    color: $white;
+    margin: 20px;
+  }
+
+  button {
+    padding: 10px;
+    background: $red;
+    color: #000;
+    font-weight: 600;
+    font-size: 1.35em;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 25px 10px 7.5px;
+    border-radius: 4px;
+    color: $white;
+    font-weight: 500;
+    font-size: 1em;
+    transition: 0.5s;
+  }
+}

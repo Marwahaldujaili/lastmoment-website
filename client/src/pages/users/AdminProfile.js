@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import "../../styles/AdminProfile.scss";
+import { useNavigate } from "react-router-dom";
 
 function AdminProfile() {
   const apiUrl = process.env.REACT_APP_API_ENDPOINT;
 
   const [adminData, setAdminData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAdminProfile = async () => {
@@ -44,14 +47,14 @@ function AdminProfile() {
         throw new Error("Error logging out");
       }
 
-      // Redirect or handle the logout success as needed
+      navigate("/");
     } catch (error) {
       console.error("Error logging out:", error);
     }
   };
 
   return (
-    <div>
+    <div className="profile-container">
       <h1>Admin Profile</h1>
       {loading && <p>Loading...</p>}
       {adminData && (

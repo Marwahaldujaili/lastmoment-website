@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../styles/Login.scss";
 
 function AdminLogin() {
   const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -28,7 +31,7 @@ function AdminLogin() {
       const data = await response.json();
       if (response.ok) {
         console.log("Login successful:", data);
-        // Optionally, you can redirect the user to another page or show a success message.
+        navigate("/admin/profile");
       } else {
         console.error("Login failed:", data.error);
         // Handle the error (e.g., display an error message to the user).
@@ -39,29 +42,25 @@ function AdminLogin() {
     }
   };
   return (
-    <div>
+    <div className="login-container">
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          placeholder="Email"
+        />
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          placeholder="Password"
+        />
         <button type="submit">Login</button>
       </form>
     </div>

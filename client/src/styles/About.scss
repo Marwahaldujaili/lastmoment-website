@@ -1,0 +1,16 @@
+@import "./base";
+
+.about-container {
+  h1 {
+    text-align: center;
+    @include pageHeader;
+  }
+  p {
+    color: $white;
+    text-align: center;
+    padding: 10px 40px;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+  }
+}

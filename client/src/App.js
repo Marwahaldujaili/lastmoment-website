@@ -11,6 +11,7 @@ import Cleaning from "./pages/Cleaning";
 import AllProducts from "./pages/AllProducts";
 import AdminLogin from "./pages/users/AdminLogin";
 import AdminProfile from "./pages/users/AdminProfile";
+import EditAdmin from "./pages/users/EditAdmin";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/cleaning" element={<Cleaning />} />
           <Route path="/login" element={<AdminLogin />} />
           <Route path="/admin/profile" element={<AdminProfile />} />
+          <Route path="/editadmin" element={<EditAdmin />} />
         </Routes>
       </>
       <Footer />

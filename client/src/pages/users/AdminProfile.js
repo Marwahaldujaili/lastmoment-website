@@ -53,6 +53,10 @@ function AdminProfile() {
     }
   };
 
+  const handleEditAdmin = () => {
+    navigate("/editadmin");
+  };
+
   return (
     <div className="profile-container">
       <h1>Admin Profile</h1>
@@ -61,6 +65,7 @@ function AdminProfile() {
         <div>
           <p>Email: {adminData.email}</p>
           <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleEditAdmin}>Edit Admin Account</button>
         </div>
       )}
     </div>

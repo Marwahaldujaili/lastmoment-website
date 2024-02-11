@@ -9,8 +9,10 @@ import Footer from "./components/Footer";
 import Perfumes from "./pages/Perfumes";
 import Cleaning from "./pages/Cleaning";
 import AllProducts from "./pages/AllProducts";
-import AdminLogin from "./pages/users/AdminLogin";
-import AdminProfile from "./pages/users/AdminProfile";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminProfile from "./pages/admin/AdminProfile";
+import EditAdmin from "./pages/admin/EditAdmin";
+import NewCleaningProduct from "./pages/admin/NewCleaningProduct";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <Route path="/cleaning" element={<Cleaning />} />
           <Route path="/login" element={<AdminLogin />} />
           <Route path="/admin/profile" element={<AdminProfile />} />
+          <Route path="/editadmin" element={<EditAdmin />} />
+          <Route path="/newcleaningproduct" element={<NewCleaningProduct />} />
         </Routes>
       </>
       <Footer />

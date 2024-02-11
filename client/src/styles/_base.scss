@@ -4,15 +4,16 @@
 
 @mixin headings {
   font-family: "Nothing You Could Do", cursive;
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 
 @mixin pageHeader {
   font-family: "Nothing You Could Do", cursive;
-  font-size: 3rem;
+  font-size: 2rem;
   padding-top: 20px;
   padding-bottom: 20px;
   color: $red;
+  text-align: center;
 }
 /////colors
 

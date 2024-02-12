@@ -1,5 +1,20 @@
 import CleaningProduct from "../models/CleaningProducts.js";
+import multer from "multer";
 
+// Multer storage configuration
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Define the destination folder for uploaded files
+  },
+  filename: function (req, file, cb) {
+    // Use a unique filename for each uploaded file
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage });
+
+// Create Cleaning Product with multiple image upload
 export const createCleaningProduct = async (req, res) => {
   try {
     const {
@@ -9,9 +24,17 @@ export const createCleaningProduct = async (req, res) => {
       quantity,
       pricePerCarton,
       pricePerPiece,
-      image,
     } = req.body;
-    // Create a new instance of the CleaningProduct model
+
+    // Check if req.files exists (multer adds this when files are uploaded)
+    if (!req.files || req.files.length === 0) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Images are required" });
+    }
+
+    const images = req.files.map((file) => file.filename);
+
     const newCleaningProduct = new CleaningProduct({
       productName,
       scent,
@@ -19,9 +42,9 @@ export const createCleaningProduct = async (req, res) => {
       quantity,
       pricePerCarton,
       pricePerPiece,
-      image,
+      images,
     });
-    // Save the new cleaning product to the database
+
     await newCleaningProduct.save();
 
     res.status(201).json({ success: true, data: newCleaningProduct });
@@ -39,7 +62,7 @@ export const viewAllCleaning = async (req, res) => {
 
     res.status(200).json({ success: true, data: allCleaning });
   } catch (error) {
-    console.error("Error retrieving perfume products:", error);
+    console.error("Error retrieving cleaning products:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
@@ -47,7 +70,7 @@ export const viewAllCleaning = async (req, res) => {
 // Get/View Single Cleaning Product Controller
 export const getSingleCleaningProduct = async (req, res) => {
   try {
-    const { productId } = req.params; // Assuming productId is part of the route parameters
+    const { productId } = req.params;
 
     // Find the cleaning product by productId
     const cleaningProduct = await CleaningProduct.findById(productId);
@@ -65,18 +88,21 @@ export const getSingleCleaningProduct = async (req, res) => {
   }
 };
 
-// edit
-
+// Edit Cleaning Product with multiple image upload
 export const editCleaningProduct = async (req, res) => {
   try {
-    const { productId } = req.params; // Assuming productId is part of the route parameters
-    const updatedFields = req.body; // Fields to be updated
+    const { productId } = req.params;
+    const updatedFields = req.body;
 
-    // Find the cleaning product by productId
+    // Check if req.files exists (multer adds this when files are uploaded)
+    if (req.files && req.files.length > 0) {
+      updatedFields.images = req.files.map((file) => file.filename);
+    }
+
     const cleaningProduct = await CleaningProduct.findByIdAndUpdate(
       productId,
       updatedFields,
-      { new: true } // This option returns the updated document
+      { new: true }
     );
 
     if (!cleaningProduct) {
@@ -95,7 +121,7 @@ export const editCleaningProduct = async (req, res) => {
 // Delete Controller for Cleaning Products
 export const deleteCleaningProduct = async (req, res) => {
   try {
-    const { productId } = req.params; // Assuming productId is part of the route parameters
+    const { productId } = req.params;
 
     // Find the cleaning product by productId and delete it
     const result = await CleaningProduct.deleteOne({ _id: productId });

@@ -13,24 +13,42 @@ function NewCleaningProduct() {
     quantity: "",
     pricePerCarton: "",
     pricePerPiece: "",
-    image: "",
+    images: [], // Update the state to handle multiple images
   });
-  const [error, setError] = useState(null); // State to manage the error message
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+
+    // Update the state to include an array of File objects
+    setFormData({ ...formData, images: files });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
+      const form = new FormData();
+
+      form.append("productName", formData.productName);
+      form.append("scent", formData.scent);
+      form.append("capacity", formData.capacity);
+      form.append("quantity", formData.quantity);
+      form.append("pricePerCarton", formData.pricePerCarton);
+      form.append("pricePerPiece", formData.pricePerPiece);
+
+      // Append each image file to the FormData object
+      formData.images.forEach((image, index) => {
+        form.append(`images${index + 1}`, image);
+      });
+
       const response = await fetch(`${apiUrl}/product/cleaning/new`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        body: form,
         credentials: "include",
       });
 
@@ -38,14 +56,11 @@ function NewCleaningProduct() {
 
       if (response.ok) {
         console.log("Product created", data);
-        navigate("/cleaning");
+        navigate("/allcleaning");
       } else {
         console.log("Error", data.error);
-        setError(data.error); // Update the error state
       }
     } catch (error) {
-      setError("An unexpected error occurred."); // Update the error state
-
       console.error("Error", error);
     }
   };
@@ -109,15 +124,16 @@ function NewCleaningProduct() {
             onChange={handleChange}
           />
         </label>
-        {/* <label>
-          Image URL:
+        <label>
+          Images:
           <input
-            type="text"
-            name="image"
-            value={formData.image}
-            onChange={handleChange}
+            type="file"
+            name="images"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
           />
-        </label> */}
+        </label>
         <button type="submit">Add</button>
       </form>
     </div>

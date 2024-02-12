@@ -7,7 +7,7 @@ import Contact from "./pages/Contact";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Perfumes from "./pages/Perfumes";
-import Cleaning from "./pages/Cleaning";
+import AllCleaning from "./pages/AllCleaning";
 import AllProducts from "./pages/AllProducts";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminProfile from "./pages/admin/AdminProfile";
@@ -26,7 +26,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/products" element={<AllProducts />} />
           <Route path="/perfumes" element={<Perfumes />} />
-          <Route path="/cleaning" element={<Cleaning />} />
+          <Route path="/allcleaning" element={<AllCleaning />} />
           <Route path="/login" element={<AdminLogin />} />
           <Route path="/admin/profile" element={<AdminProfile />} />
           <Route path="/editadmin" element={<EditAdmin />} />

@@ -11,12 +11,24 @@ import {
 import { authenticateAdmin } from "../middleware/authenticateAdmin.js";
 
 const router = express.Router();
-const upload = multer({ dest: "uploads/" });
+
+// Multer storage configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    // Preserve the original file extension
+    cb(null, Date.now() + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router.post(
   "/new",
-  upload.array("images", 5), // Ensure that "images" matches the field name in the form
   authenticateAdmin,
+  upload.array("images"), // Ensure that "images" matches the field name in the form
   createCleaningProduct
 );
 

@@ -1,18 +1,4 @@
 import CleaningProduct from "../models/CleaningProducts.js";
-import multer from "multer";
-
-// Multer storage configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Define the destination folder for uploaded files
-  },
-  filename: function (req, file, cb) {
-    // Use a unique filename for each uploaded file
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-
-const upload = multer({ storage });
 
 // Create Cleaning Product with multiple image upload
 export const createCleaningProduct = async (req, res) => {
@@ -33,7 +19,10 @@ export const createCleaningProduct = async (req, res) => {
         .json({ success: false, error: "Images are required" });
     }
 
-    const images = req.files.map((file) => file.filename);
+    const images = req.files.map((file) => {
+      console.log(file);
+      return file.filename;
+    });
 
     const newCleaningProduct = new CleaningProduct({
       productName,

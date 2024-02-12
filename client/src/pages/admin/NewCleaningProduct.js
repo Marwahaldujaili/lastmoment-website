@@ -42,8 +42,8 @@ function NewCleaningProduct() {
       form.append("pricePerPiece", formData.pricePerPiece);
 
       // Append each image file to the FormData object
-      formData.images.forEach((image, index) => {
-        form.append(`images${index + 1}`, image);
+      formData.images.forEach((image) => {
+        form.append("images", image);
       });
 
       const response = await fetch(`${apiUrl}/product/cleaning/new`, {

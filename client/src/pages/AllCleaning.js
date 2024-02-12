@@ -33,10 +33,10 @@ const Cleaning = () => {
           <Card key={product._id} style={{ margin: "10px", width: "200px" }}>
             {product.image && (
               <CardMedia
-                component="img"
+                component="images"
                 alt={product.productName}
                 height="140"
-                image={product.image}
+                images={product.images}
               />
             )}
             <CardContent>

@@ -3,13 +3,13 @@ import { Schema, model } from "mongoose";
 
 const cleaningProductSchema = new Schema(
   {
-    productName: { type: String, required: true, unique: true },
+    productName: { type: String, required: true },
     scent: String,
     capacity: String,
     quantity: Number,
     pricePerCarton: String,
     pricePerPiece: String,
-    image: String,
+    images: [{ type: String }], // Change to an array of strings
   },
   {
     versionKey: false,

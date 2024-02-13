@@ -51,7 +51,7 @@ function Header() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/cleaning" onClick={() => setMenuOpen(false)}>
+                  <Link to="/allcleaning" onClick={() => setMenuOpen(false)}>
                     - Cleaning
                   </Link>
                 </li>

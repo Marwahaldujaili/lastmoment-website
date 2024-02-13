@@ -5,6 +5,7 @@ import cleaningRoutes from "./routes/cleaningRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import perfumeRoutes from "./routes/perfumeRoutes.js";
 import cors from "cors";
+import multer from "multer";
 
 const app = express();
 app.use(cookieParser()); // Add this line to use cookie-parser middleware
@@ -24,6 +25,18 @@ mongoose
     console.log("DB connected");
   })
   .catch((err) => console.log(err.message));
+// Multer storage configuration
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Define the destination folder for uploaded files
+  },
+  filename: function (req, file, cb) {
+    // Use a unique filename for each uploaded file
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 app.use(express.json());
 app.use("/product/cleaning", cleaningRoutes);

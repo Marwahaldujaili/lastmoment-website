@@ -25,7 +25,7 @@ function NewCleaningProduct() {
     const files = Array.from(e.target.files);
 
     // Update the state to include an array of File objects
-    setFormData({ ...formData, images: files });
+    setFormData((prevState) => ({ ...prevState, images: files }));
   };
 
   const handleSubmit = async (e) => {
@@ -69,71 +69,64 @@ function NewCleaningProduct() {
     <div className="newCleaning-container">
       <h1>Add New Cleaning Product</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Product Name:
-          <input
-            type="text"
-            name="productName"
-            value={formData.productName}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Product Scent:
-          <input
-            type="text"
-            name="scent"
-            value={formData.scent}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Capacity:
-          <input
-            type="text"
-            name="capacity"
-            value={formData.capacity}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Quantity:
-          <input
-            type="number"
-            name="quantity"
-            value={formData.quantity}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Price Per Carton:
-          <input
-            type="text"
-            name="pricePerCarton"
-            value={formData.pricePerCarton}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Price Per Piece:
-          <input
-            type="text"
-            name="pricePerPiece"
-            value={formData.pricePerPiece}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Images:
-          <input
-            type="file"
-            name="images"
-            accept="image/*"
-            multiple
-            onChange={handleImageChange}
-          />
-        </label>
+        <label>Product Name</label>
+        <input
+          type="text"
+          name="productName"
+          value={formData.productName}
+          onChange={handleChange}
+          required
+        />
+
+        <label>Product Scent</label>
+        <input
+          type="text"
+          name="scent"
+          value={formData.scent}
+          onChange={handleChange}
+        />
+
+        <label>Capacity</label>
+        <input
+          type="text"
+          name="capacity"
+          value={formData.capacity}
+          onChange={handleChange}
+        />
+
+        <label>Quantity</label>
+        <input
+          type="number"
+          name="quantity"
+          value={formData.quantity}
+          onChange={handleChange}
+        />
+
+        <label>Price Per Carton</label>
+        <input
+          type="text"
+          name="pricePerCarton"
+          value={formData.pricePerCarton}
+          onChange={handleChange}
+        />
+
+        <label>Price Per Piece</label>
+        <input
+          type="text"
+          name="pricePerPiece"
+          value={formData.pricePerPiece}
+          onChange={handleChange}
+        />
+        <label> </label>
+        <input
+          className="image-upload"
+          type="file"
+          name="images"
+          accept="image/*"
+          multiple
+          onChange={handleImageChange}
+        />
+
         <button type="submit">Add</button>
       </form>
     </div>

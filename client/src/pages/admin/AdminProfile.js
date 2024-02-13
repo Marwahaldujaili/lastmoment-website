@@ -57,9 +57,9 @@ function AdminProfile() {
     navigate("/newcleaningproduct");
   };
 
-  // const handleEditAdmin = () => {
-  //   navigate("/editadmin");
-  // };
+  const handleEditAdmin = () => {
+    navigate("/editadmin");
+  };
 
   return (
     <div className="profile-container">
@@ -68,11 +68,13 @@ function AdminProfile() {
       {adminData && (
         <div>
           <p>Email: {adminData.email}</p>
-          <button onClick={handleLogout}>Logout</button>
-          <button onClick={navigateToAddCleaningProduct}>
-            Add New Cleaning Product
-          </button>
-          {/* <button onClick={handleEditAdmin}>Edit Admin Account</button> */}
+          <div className="buttons">
+            <button onClick={navigateToAddCleaningProduct}>
+              New Cleaning Products
+            </button>
+            <button onClick={handleEditAdmin}>Edit Admin Account</button>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
         </div>
       )}
     </div>

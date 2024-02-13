@@ -10,11 +10,17 @@
     color: $white;
     margin: 20px;
   }
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    gap: 25px;
+    margin: auto;
+  }
 
   button {
     padding: 10px;
-    background: $red;
-    color: #000;
+    background: $maroon;
     font-weight: 600;
     font-size: 1.35em;
     letter-spacing: 0.05em;
@@ -27,5 +33,8 @@
     font-weight: 500;
     font-size: 1em;
     transition: 0.5s;
+    &:hover {
+      background: $red;
+    }
   }
 }

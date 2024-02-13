@@ -48,7 +48,11 @@ export const viewAllCleaning = async (req, res) => {
   try {
     // Retrieve all cleaning products from the database
     const allCleaning = await CleaningProduct.find();
-
+    // Map the products to include the full path to the images
+    const productsWithFullPath = allCleaning.map((product) => ({
+      ...product.toObject(),
+      images: `http://localhost:5000/uploads/${product.images}`,
+    }));
     res.status(200).json({ success: true, data: allCleaning });
   } catch (error) {
     console.error("Error retrieving cleaning products:", error);

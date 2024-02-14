@@ -98,6 +98,8 @@ export const getConfirmation = async (req, res) => {
 export const loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("Received login request:", req.body);
+
     // Find the admin user by email
     const admin = await Admin.findOne({ email });
 

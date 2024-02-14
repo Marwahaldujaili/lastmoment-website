@@ -11,10 +11,11 @@ const app = express();
 app.use(cookieParser()); // Add this line to use cookie-parser middleware
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with your React app's URL
+    origin: ["http://localhost:3000", "http://192.168.100.119:3000"],
     credentials: true, // Enable credentials (cookies, authorization headers, etc.)
   })
 );
+
 const PORT = 5000;
 const DB_URI =
   "mongodb+srv://marwah:mad1983bremen@mad.c3dwjnj.mongodb.net/lastmoment";

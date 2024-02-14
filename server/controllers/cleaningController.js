@@ -10,29 +10,32 @@ export const createCleaningProduct = async (req, res) => {
       quantity,
       pricePerCarton,
       pricePerPiece,
+      mainImage,
+      detailsImage,
     } = req.body;
 
-    // Check if req.files exists (multer adds this when files are uploaded)
-    if (!req.files || req.files.length === 0) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Images are required" });
-    }
+    // Check if req.files is defined and has the expected structure
+    const mainImageFile = req.files && req.files.mainImage;
+    const detailsImageFile = req.files && req.files.detailsImage;
 
-    const images = req.files.map((file) => {
-      console.log(file);
-      return file.filename;
-    });
+    // Ensure that mainImage and detailsImage are always strings
+    const mainImageFilename = mainImageFile ? mainImageFile[0]?.filename : null;
+    const detailsImageFilename = detailsImageFile
+      ? detailsImageFile[0]?.filename
+      : null;
 
-    const newCleaningProduct = new CleaningProduct({
+    const newCleaningProductData = {
       productName,
       scent,
       capacity,
       quantity,
       pricePerCarton,
       pricePerPiece,
-      images,
-    });
+      mainImage: mainImageFilename,
+      detailsImage: detailsImageFilename || null, // Set to null if detailsImage is not provided
+    };
+
+    const newCleaningProduct = new CleaningProduct(newCleaningProductData);
 
     await newCleaningProduct.save();
 
@@ -51,9 +54,12 @@ export const viewAllCleaning = async (req, res) => {
     // Map the products to include the full path to the images
     const productsWithFullPath = allCleaning.map((product) => ({
       ...product.toObject(),
-      images: `http://localhost:5000/uploads/${product.images}`,
+      mainImage: `http://localhost:5000/uploads/${product.mainImage}`,
+      detailsImage: product.detailsImage
+        ? `http://localhost:5000/uploads/${product.detailsImage}`
+        : null,
     }));
-    res.status(200).json({ success: true, data: allCleaning });
+    res.status(200).json({ success: true, data: productsWithFullPath });
   } catch (error) {
     console.error("Error retrieving cleaning products:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -74,7 +80,16 @@ export const getSingleCleaningProduct = async (req, res) => {
         .json({ success: false, error: "Cleaning product not found" });
     }
 
-    res.status(200).json({ success: true, data: cleaningProduct });
+    // Map the product to include the full path to the images
+    const productWithFullPath = {
+      ...cleaningProduct.toObject(),
+      mainImage: `http://localhost:5000/uploads/${cleaningProduct.mainImage}`,
+      detailsImage: cleaningProduct.detailsImage
+        ? `http://localhost:5000/uploads/${cleaningProduct.detailsImage}`
+        : null,
+    };
+
+    res.status(200).json({ success: true, data: productWithFullPath });
   } catch (error) {
     console.error("Error retrieving cleaning product:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });

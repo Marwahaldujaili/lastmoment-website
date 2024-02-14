@@ -13,19 +13,18 @@ function NewCleaningProduct() {
     quantity: "",
     pricePerCarton: "",
     pricePerPiece: "",
-    images: [], // Update the state to handle multiple images
+    mainImage: null,
+    detailsImage: null,
   });
+
+  const handleImageChange = (e) => {
+    const { name, files } = e.target;
+    setFormData((prevState) => ({ ...prevState, [name]: files[0] }));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-
-    // Update the state to include an array of File objects
-    setFormData((prevState) => ({ ...prevState, images: files }));
   };
 
   const handleSubmit = async (e) => {
@@ -41,10 +40,13 @@ function NewCleaningProduct() {
       form.append("pricePerCarton", formData.pricePerCarton);
       form.append("pricePerPiece", formData.pricePerPiece);
 
-      // Append each image file to the FormData object
-      formData.images.forEach((image) => {
-        form.append("images", image);
-      });
+      if (formData.mainImage) {
+        form.append("mainImage", formData.mainImage);
+      }
+
+      if (formData.detailsImage) {
+        form.append("detailsImage", formData.detailsImage);
+      }
 
       const response = await fetch(`${apiUrl}/product/cleaning/new`, {
         method: "POST",
@@ -117,13 +119,22 @@ function NewCleaningProduct() {
           value={formData.pricePerPiece}
           onChange={handleChange}
         />
-        <label> </label>
+
+        <label>Main Image</label>
         <input
           className="image-upload"
           type="file"
-          name="images"
+          name="mainImage"
           accept="image/*"
-          multiple
+          onChange={handleImageChange}
+        />
+
+        <label>Details Image</label>
+        <input
+          className="image-upload"
+          type="file"
+          name="detailsImage"
+          accept="image/*"
           onChange={handleImageChange}
         />
 

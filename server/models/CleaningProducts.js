@@ -9,7 +9,8 @@ const cleaningProductSchema = new Schema(
     quantity: Number,
     pricePerCarton: String,
     pricePerPiece: String,
-    images: [{ type: String }], // Change to an array of strings
+    mainImage: String,
+    detailsImage: String,
   },
   {
     versionKey: false,

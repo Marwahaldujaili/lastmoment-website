@@ -29,7 +29,7 @@ mongoose
 // Multer storage configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Define the destination folder for uploaded files
+    cb(null, "public/cleaning/uploads"); // Define the destination folder for uploaded files
   },
   filename: function (req, file, cb) {
     // Use a unique filename for each uploaded file
@@ -38,8 +38,9 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
 app.use(express.json());
+app.use(express.static('public'))
+
 app.use("/product/cleaning", cleaningRoutes);
 app.use("/product/perfume", perfumeRoutes);
 app.use("/user/admin", adminRoutes);

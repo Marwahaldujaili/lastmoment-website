@@ -14,11 +14,9 @@ export const createCleaningProduct = async (req, res) => {
       detailsImage,
     } = req.body;
 
-    // Check if req.files is defined and has the expected structure
     const mainImageFile = req.files && req.files.mainImage;
     const detailsImageFile = req.files && req.files.detailsImage;
 
-    // Ensure that mainImage and detailsImage are always strings
     const mainImageFilename = mainImageFile ? mainImageFile[0]?.filename : null;
     const detailsImageFilename = detailsImageFile
       ? detailsImageFile[0]?.filename
@@ -54,9 +52,9 @@ export const viewAllCleaning = async (req, res) => {
     // Map the products to include the full path to the images
     const productsWithFullPath = allCleaning.map((product) => ({
       ...product.toObject(),
-      mainImage: `http://localhost:5000/uploads/${product.mainImage}`,
+      mainImage: `http://localhost:5000/cleaning/uploads/${product.mainImage}`,
       detailsImage: product.detailsImage
-        ? `http://localhost:5000/uploads/${product.detailsImage}`
+        ? `http://localhost:5000/cleaning/uploads/${product.detailsImage}`
         : null,
     }));
     res.status(200).json({ success: true, data: productsWithFullPath });
@@ -83,9 +81,9 @@ export const getSingleCleaningProduct = async (req, res) => {
     // Map the product to include the full path to the images
     const productWithFullPath = {
       ...cleaningProduct.toObject(),
-      mainImage: `http://localhost:5000/uploads/${cleaningProduct.mainImage}`,
+      mainImage: `http://localhost:5000/cleaning/uploads/${cleaningProduct.mainImage}`,
       detailsImage: cleaningProduct.detailsImage
-        ? `http://localhost:5000/uploads/${cleaningProduct.detailsImage}`
+        ? `http://localhost:5000/cleaning/uploads/${cleaningProduct.detailsImage}`
         : null,
     };
 

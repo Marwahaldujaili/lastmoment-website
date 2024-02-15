@@ -54,6 +54,7 @@ header {
     height: 100vh;
     overflow: hidden;
     background-color: rgb(28, 27, 27);
+    z-index: 99;
     // background-image: url("../assets/images/bg1.jpg");
     background-size: cover;
     ul {

@@ -26,25 +26,14 @@ mongoose
     console.log("DB connected");
   })
   .catch((err) => console.log(err.message));
-// Multer storage configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/cleaning/uploads"); // Define the destination folder for uploaded files
-  },
-  filename: function (req, file, cb) {
-    // Use a unique filename for each uploaded file
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
 
-const upload = multer({ storage: storage });
 app.use(express.json());
-app.use(express.static('public'))
+app.use(express.static("public"));
 
 app.use("/product/cleaning", cleaningRoutes);
 app.use("/product/perfume", perfumeRoutes);
 app.use("/user/admin", adminRoutes);
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
 });

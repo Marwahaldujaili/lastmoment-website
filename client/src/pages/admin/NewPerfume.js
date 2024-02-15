@@ -1,43 +1,44 @@
 import React, { useState } from "react";
-import "../../styles/NewCleaning.scss";
+import "../../styles/NewPerfume.scss";
 import { useNavigate } from "react-router-dom";
 import Compressor from "compressorjs";
 
-function NewCleaningProduct() {
+function NewPerfume() {
   const apiUrl = process.env.REACT_APP_API_ENDPOINT;
   const navigate = useNavigate();
   const [mainImageName, setMainImageName] = useState("");
-  const [detailsImageName, setDetailsImageName] = useState("");
+  // const [detailsImageName, setDetailsImageName] = useState("");
 
   const [formData, setFormData] = useState({
     productName: "",
-    scent: "",
     capacity: "",
-    quantity: "",
-    pricePerCarton: "",
-    pricePerPiece: "",
+    price: "",
+    discountedPrice: "",
+    description: "",
     mainImage: null,
-    detailsImage: null,
+    // detailsImage: null,
   });
+
   const handleImageChange = async (e) => {
     const { name, files } = e.target;
 
     if (files && files.length > 0) {
-      const fileName = files[0].name;
       new Compressor(files[0], {
         quality: 100,
-        maxWidth: 2800,
-        maxHeight: 2800,
+        maxWidth: 1800,
+        maxHeight: 1800,
         success: (compressedImage) => {
+          // Append the compressed file directly, not its Blob URL
           setFormData((prevState) => ({
             ...prevState,
             [name]: compressedImage,
           }));
           if (name === "mainImage") {
-            setMainImageName(fileName);
-          } else if (name === "detailsImage") {
-            setDetailsImageName(fileName);
+            setMainImageName(files[0].name); // Display the original file name
           }
+          // else if (name === "detailsImage") {
+          //   setDetailsImageName(files[0].name);
+          // }
         },
         error: (err) => {
           console.error("Error compressing image:", err);
@@ -54,25 +55,15 @@ function NewCleaningProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const form = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] != null) {
+        form.append(key, formData[key]);
+      }
+    });
+
     try {
-      const form = new FormData();
-
-      form.append("productName", formData.productName);
-      form.append("scent", formData.scent);
-      form.append("capacity", formData.capacity);
-      form.append("quantity", formData.quantity);
-      form.append("pricePerCarton", formData.pricePerCarton);
-      form.append("pricePerPiece", formData.pricePerPiece);
-
-      if (formData.mainImage) {
-        form.append("mainImage", formData.mainImage, mainImageName);
-      }
-
-      if (formData.detailsImage) {
-        form.append("detailsImage", formData.detailsImage, detailsImageName);
-      }
-
-      const response = await fetch(`${apiUrl}/product/cleaning/new`, {
+      const response = await fetch(`${apiUrl}/product/perfume/new`, {
         method: "POST",
         body: form,
         credentials: "include",
@@ -81,8 +72,8 @@ function NewCleaningProduct() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Product created", data);
-        navigate("/allcleaning");
+        console.log("Perfume created", data);
+        navigate("/allperfumes"); // Adjust navigation path
       } else {
         console.log("Error", data.error);
       }
@@ -92,8 +83,8 @@ function NewCleaningProduct() {
   };
 
   return (
-    <div className="newCleaning-container">
-      <h1>Add New Cleaning Product</h1>
+    <div className="newPerfume-container">
+      <h1>Add New Perfume Product</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
@@ -107,17 +98,6 @@ function NewCleaningProduct() {
             />
           </div>
           <div className="form-group">
-            <label>Product Scent</label>
-            <input
-              type="text"
-              name="scent"
-              value={formData.scent}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group">
             <label>Capacity</label>
             <input
               type="text"
@@ -126,32 +106,34 @@ function NewCleaningProduct() {
               onChange={handleChange}
             />
           </div>
+        </div>
+        <div className="form-row">
           <div className="form-group">
-            <label>Quantity</label>
+            <label>Price</label>
             <input
               type="number"
-              name="quantity"
-              value={formData.quantity}
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Discounted Price</label>
+            <input
+              type="number"
+              name="discountedPrice"
+              value={formData.discountedPrice}
               onChange={handleChange}
             />
           </div>
         </div>
         <div className="form-row">
           <div className="form-group">
-            <label>Price Per Carton</label>
-            <input
-              type="text"
-              name="pricePerCarton"
-              value={formData.pricePerCarton}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Price Per Piece</label>
-            <input
-              type="text"
-              name="pricePerPiece"
-              value={formData.pricePerPiece}
+            <label>Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
               onChange={handleChange}
             />
           </div>
@@ -179,7 +161,7 @@ function NewCleaningProduct() {
             />
           </div>
 
-          <div className="form-group image-upload-group">
+          {/* <div className="form-group image-upload-group">
             <label>Details Image</label>
             <button
               type="button"
@@ -201,7 +183,7 @@ function NewCleaningProduct() {
               onChange={handleImageChange}
               style={{ display: "none" }}
             />
-          </div>
+          </div> */}
         </div>
         <button type="submit">Add</button>
       </form>
@@ -209,4 +191,4 @@ function NewCleaningProduct() {
   );
 }
 
-export default NewCleaningProduct;
+export default NewPerfume;

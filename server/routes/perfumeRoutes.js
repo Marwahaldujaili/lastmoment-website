@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import {
   createPerfume,
   deletePerfume,
@@ -10,10 +11,52 @@ import { authenticateAdmin } from "../middleware/authenticateAdmin.js";
 
 const router = express.Router();
 
-router.post("/new", authenticateAdmin, createPerfume);
+// Configure multer storage and file filtering
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/perfume/uploads"); // Adjust the destination folder as needed
+  },
+  filename: (req, file, cb) => {
+    // Use Date.now() to ensure unique filenames or define another naming strategy
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed!"), false);
+    }
+  },
+});
+
+// Routes
+router.post(
+  "/new",
+  authenticateAdmin,
+  upload.fields([
+    { name: "mainImage", maxCount: 1 },
+    { name: "detailsImage", maxCount: 1 }, // Assuming your model and controller support handling these fields
+  ]),
+  createPerfume
+);
+
 router.get("/view", viewPerfume);
 router.get("/:productId/view", viewSinglePerfume);
-router.put("/:productId/edit", authenticateAdmin, editPerfume);
+
+router.put(
+  "/:productId/edit",
+  authenticateAdmin,
+  upload.fields([
+    { name: "mainImage", maxCount: 1 },
+    { name: "detailsImage", maxCount: 1 },
+  ]),
+  editPerfume
+);
+
 router.delete("/:productId/delete", authenticateAdmin, deletePerfume);
 
 export default router;

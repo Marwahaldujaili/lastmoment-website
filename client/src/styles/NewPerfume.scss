@@ -1,6 +1,6 @@
 @import "./base";
 
-.newCleaning-container {
+.newPerfume-container {
   h1 {
     @include pageHeader;
     font-size: 1.2rem;
@@ -52,6 +52,7 @@
         }
 
         input,
+        textarea,
         .image-upload {
           background: #333;
           border: none;
@@ -63,6 +64,10 @@
           font-size: 1em;
           transition: 0.5s;
         }
+      }
+      textarea {
+        width: 200px;
+        height: 150px;
       }
     }
 

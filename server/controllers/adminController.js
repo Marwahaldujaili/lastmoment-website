@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import { sendConfirmationEmail } from "../middleware/sendConfirmationEmail.js";
 
 const CONFIRMATION_SECRET = "askmeifyouwannaknow";
-const FRONT_END_URL = "http://localhost:3000";
+const FRONT_END_URL = "http://localhost:3000" || "http://192.168.100.119:3000";
 
 //register new admin
 export const registerNewAdmin = async (req, res) => {
@@ -49,11 +49,11 @@ export const registerNewAdmin = async (req, res) => {
     // Set the token as a cookie in the response
     res.cookie("jwt", token, {
       httpOnly: true,
-      maxAge: 3600000, // (1 hour)
-      secure: true, //process.env.NODE_ENV === "production", // Only send the cookie over HTTPS in production
+      maxAge: 3600000,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
 
-    // Respond with the token and user data
     res.status(201).json({ success: true, data: { admin: newAdmin, token } });
   } catch (error) {
     console.error(error);
@@ -86,7 +86,7 @@ export const getConfirmation = async (req, res) => {
     console.log("Admin confirmed:", admin);
 
     // Redirect to the login page after successful confirmation
-    res.redirect(`${FRONT_END_URL}`);
+    // res.redirect(`${FRONT_END_URL}`);
   } catch (error) {
     console.error("Error confirming email:", error);
     // Handle token verification errors or other issues

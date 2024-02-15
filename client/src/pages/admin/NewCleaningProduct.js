@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../styles/NewCleaning.scss";
 import { useNavigate } from "react-router-dom";
+import Compressor from 'compressorjs'
 
 function NewCleaningProduct() {
   const apiUrl = process.env.REACT_APP_API_ENDPOINT;
@@ -16,11 +17,27 @@ function NewCleaningProduct() {
     mainImage: null,
     detailsImage: null,
   });
-
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const { name, files } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: files[0] }));
+  
+    if (files && files.length > 0) {
+      new Compressor(files[0], {
+        quality: 0.5,
+        maxWidth: 800,
+        maxHeight: 800,
+        success: (compressedImage) => {
+          // Directly use the compressedImage as it's already a File object
+          setFormData((prevState) => ({ ...prevState, [name]: compressedImage }));
+        },
+        error: (err) => {
+          console.error('Error compressing image:', err);
+        },
+      });
+    }
   };
+  
+  
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;

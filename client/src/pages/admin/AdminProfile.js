@@ -31,7 +31,7 @@ function AdminProfile() {
       }
     };
     fetchAdminProfile();
-  }, []);
+  });
 
   const handleLogout = async () => {
     try {

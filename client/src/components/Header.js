@@ -46,7 +46,7 @@ function Header() {
               </Link>
               <ul>
                 <li>
-                  <Link to="/perfumes" onClick={() => setMenuOpen(false)}>
+                  <Link to="/allperfumes" onClick={() => setMenuOpen(false)}>
                     - Perfumes
                   </Link>
                 </li>

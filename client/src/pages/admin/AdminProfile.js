@@ -56,7 +56,9 @@ function AdminProfile() {
   const navigateToAddCleaningProduct = () => {
     navigate("/newcleaningproduct");
   };
-
+  const navigateToAddPerfume = () => {
+    navigate("/newperfume");
+  };
   const handleEditAdmin = () => {
     navigate("/editadmin");
   };
@@ -72,6 +74,7 @@ function AdminProfile() {
             <button onClick={navigateToAddCleaningProduct}>
               New Cleaning Products
             </button>
+            <button onClick={navigateToAddPerfume}>New Perfume</button>
             <button onClick={handleEditAdmin}>Edit Admin Account</button>
             <button onClick={handleLogout}>Logout</button>
           </div>

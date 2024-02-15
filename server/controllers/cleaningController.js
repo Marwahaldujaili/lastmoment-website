@@ -1,5 +1,7 @@
 import CleaningProduct from "../models/CleaningProducts.js";
 
+const BASE_URL = "http://localhost:5000/cleaning/uploads/";
+
 // Create Cleaning Product with multiple image upload
 export const createCleaningProduct = async (req, res) => {
   try {
@@ -52,9 +54,9 @@ export const viewAllCleaning = async (req, res) => {
     // Map the products to include the full path to the images
     const productsWithFullPath = allCleaning.map((product) => ({
       ...product.toObject(),
-      mainImage: `http://localhost:5000/cleaning/uploads/${product.mainImage}`,
+      mainImage: `${BASE_URL}${product.mainImage}`,
       detailsImage: product.detailsImage
-        ? `http://localhost:5000/cleaning/uploads/${product.detailsImage}`
+        ? `${BASE_URL}${product.detailsImage}`
         : null,
     }));
     res.status(200).json({ success: true, data: productsWithFullPath });
@@ -81,9 +83,9 @@ export const getSingleCleaningProduct = async (req, res) => {
     // Map the product to include the full path to the images
     const productWithFullPath = {
       ...cleaningProduct.toObject(),
-      mainImage: `http://localhost:5000/cleaning/uploads/${cleaningProduct.mainImage}`,
+      mainImage: `${BASE_URL}${cleaningProduct.mainImage}`,
       detailsImage: cleaningProduct.detailsImage
-        ? `http://localhost:5000/cleaning/uploads/${cleaningProduct.detailsImage}`
+        ? `${BASE_URL}${cleaningProduct.detailsImage}`
         : null,
     };
 

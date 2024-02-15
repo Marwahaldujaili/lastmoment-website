@@ -1,0 +1,98 @@
+@import "./base";
+
+.newPerfume-container {
+  h1 {
+    @include pageHeader;
+    font-size: 1.2rem;
+  }
+  form {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: medium;
+    gap: 15px;
+    width: 80%;
+    margin: auto;
+
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        width: 48%;
+
+        &.image-upload-group {
+          position: relative;
+
+          .image-upload-button {
+            width: 45px; // Adjust size as necessary
+            height: 45px; // Adjust size as necessary
+            border-radius: 50%; // Makes the button circular
+            border: 2px solid $white; // Adjust color as necessary
+            background-color: transparent;
+            color: $white;
+            font-size: 24px; // Adjust size as necessary
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            &:hover {
+              background-color: $red; // Adjust hover color as necessary
+            }
+          }
+          .file-name {
+            color: $white;
+          }
+        }
+
+        input,
+        textarea,
+        .image-upload {
+          background: #333;
+          border: none;
+          outline: none;
+          padding: 10px;
+          border-radius: 4px;
+          color: $white;
+          font-weight: 500;
+          font-size: 1em;
+          transition: 0.5s;
+        }
+      }
+      textarea {
+        width: 200px;
+        height: 150px;
+      }
+    }
+
+    label {
+      color: $white;
+      text-align: left;
+      margin-bottom: 5px;
+    }
+
+    button {
+      width: 50%;
+      padding: 10px;
+      background: $maroon;
+      border: none;
+      outline: none;
+      color: #000;
+      border-radius: 4px;
+
+      font-weight: 600;
+      font-size: 1.35em;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      &:hover {
+        background-color: $red;
+      }
+    }
+  }
+}

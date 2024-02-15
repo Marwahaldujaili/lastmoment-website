@@ -6,13 +6,14 @@ import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Perfumes from "./pages/Perfumes";
+import AllPerfumes from "./pages/AllPerfumes";
 import AllCleaning from "./pages/AllCleaning";
 import AllProducts from "./pages/AllProducts";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminProfile from "./pages/admin/AdminProfile";
 import EditAdmin from "./pages/admin/EditAdmin";
 import NewCleaningProduct from "./pages/admin/NewCleaningProduct";
+import NewPerfume from "./pages/admin/NewPerfume";
 
 function App() {
   return (
@@ -25,12 +26,13 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/products" element={<AllProducts />} />
-          <Route path="/perfumes" element={<Perfumes />} />
+          <Route path="/allperfumes" element={<AllPerfumes />} />
           <Route path="/allcleaning" element={<AllCleaning />} />
           <Route path="/login" element={<AdminLogin />} />
           <Route path="/admin/profile" element={<AdminProfile />} />
           <Route path="/editadmin" element={<EditAdmin />} />
           <Route path="/newcleaningproduct" element={<NewCleaningProduct />} />
+          <Route path="/newperfume" element={<NewPerfume />} />
         </Routes>
       </>
       <Footer />

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/NewPerfume.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Compressor from "compressorjs";
 
 function NewPerfume() {
@@ -186,6 +186,9 @@ function NewPerfume() {
           </div> */}
         </div>
         <button type="submit">Add</button>
+        <Link to="/admin/profile">
+          <button type="button">Cancel</button>
+        </Link>
       </form>
     </div>
   );

@@ -94,5 +94,13 @@
         background-color: $red;
       }
     }
+    a {
+      width: 50%;
+      background: $maroon;
+      text-align: center;
+      &:hover {
+        background-color: $red;
+      }
+    }
   }
 }

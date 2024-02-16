@@ -92,7 +92,7 @@ const Contact = () => {
         <CardActions disableSpacing>
           <IconButton
             aria-label="whatsapp"
-            href="https://wa.me/00971565644665"
+            href="https://wa.me/+971565644665"
             target="_blank"
             rel="noopener noreferrer"
             sx={{

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import "../../styles/EditAdmin.scss";
 
 const EditAdmin = () => {
   const apiUrl = process.env.REACT_APP_API_ENDPOINT;
@@ -10,15 +11,12 @@ const EditAdmin = () => {
 
   const handleEditAdmin = async () => {
     try {
-      // Validate email
       if (!isValidEmail(newEmail) || newEmail !== confirmEmail) {
         setEmailError(
           "Please enter a valid email address and ensure it matches the confirmation."
         );
         return;
       }
-
-      // Clear previous error
       setEmailError("");
 
       const response = await fetch(`${apiUrl}/user/admin/edit`, {
@@ -34,9 +32,6 @@ const EditAdmin = () => {
         throw new Error("Error editing admin");
       }
 
-      // Handle success, e.g., redirect or show a success message
-
-      // Clear fields after successful edit
       setNewEmail("");
       setConfirmEmail("");
     } catch (error) {
@@ -45,14 +40,13 @@ const EditAdmin = () => {
   };
 
   const isValidEmail = (email) => {
-    // Basic email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   return (
-    <div>
-      <h2>Edit Admin Profile</h2>
+    <div className="edit-container">
+      <h1>Edit Admin Profile</h1>
       <form>
         <label>New Email:</label>
         <input
@@ -72,7 +66,7 @@ const EditAdmin = () => {
         </button>
         <Link to="/admin/profile">
           <button type="button">Cancel</button>
-        </Link>{" "}
+        </Link>
       </form>
     </div>
   );

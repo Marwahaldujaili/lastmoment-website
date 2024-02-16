@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Modal, Box } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const AllCleaning = () => {
   const [cleaningProducts, setCleaningProducts] = useState([]);
@@ -115,9 +116,8 @@ const AllCleaning = () => {
                   style={{ cursor: "pointer" }}
                 >
                   {product.productName}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Scent: {product.scent}
+                  <br />
+                  <ExpandMoreIcon />
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -127,6 +127,9 @@ const AllCleaning = () => {
               unmountOnExit
             >
               <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  Scent: {product.scent}
+                </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Price: {product.pricePerPiece} AED
                 </Typography>

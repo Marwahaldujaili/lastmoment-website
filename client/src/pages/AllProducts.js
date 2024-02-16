@@ -7,7 +7,7 @@ function AllProducts() {
   return (
     <div className="container">
       <h1>Our products</h1>
-      <p>Browse all our products</p>
+      <p className="this-p">Browse all our products</p>
       <AllPerfumes />
       <AllCleaning />
     </div>

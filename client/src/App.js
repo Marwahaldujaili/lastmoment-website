@@ -14,8 +14,11 @@ import AdminProfile from "./pages/admin/AdminProfile";
 import EditAdmin from "./pages/admin/EditAdmin";
 import NewCleaningProduct from "./pages/admin/NewCleaningProduct";
 import NewPerfume from "./pages/admin/NewPerfume";
+import useScrollToTop from "./components/UseScrollToTop";
 
 function App() {
+  useScrollToTop();
+
   return (
     <div className="App">
       <Header />

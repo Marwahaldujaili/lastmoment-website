@@ -1,20 +1,20 @@
 @import "./base";
 
-// // Gallery.module.scss
-// .image-item {
-//   overflow: hidden;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-
-//   img {
-//     transition: transform 0.3s ease-in-out;
-//     width: 100%; // Fill the container by default
-//     height: auto; // Maintain aspect ratio
-//     object-fit: cover; // Cover the area without distortion
-
-//     &:hover {
-//       transform: scale(2.1); // Increase size on hover
-//     }
-//   }
-// }
+.gallery-container {
+  h1 {
+    @include pageHeader;
+  }
+  p {
+    color: $white;
+    text-align: center;
+    padding: 10px 40px;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    @media (min-width: 1024px) {
+      font-size: 1.2rem;
+      margin: auto;
+      padding: 20px 60px;
+    }
+  }
+}

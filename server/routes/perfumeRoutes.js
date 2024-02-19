@@ -14,10 +14,9 @@ const router = express.Router();
 // Configure multer storage and file filtering
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/perfume/uploads"); // Adjust the destination folder as needed
+    cb(null, "public/perfume/uploads");
   },
   filename: (req, file, cb) => {
-    // Use Date.now() to ensure unique filenames or define another naming strategy
     cb(null, Date.now() + "-" + file.originalname);
   },
 });
@@ -39,7 +38,7 @@ router.post(
   authenticateAdmin,
   upload.fields([
     { name: "mainImage", maxCount: 1 },
-    { name: "detailsImage", maxCount: 1 }, // Assuming your model and controller support handling these fields
+    { name: "detailsImage", maxCount: 1 },
   ]),
   createPerfume
 );

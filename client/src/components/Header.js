@@ -1,14 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Header.scss";
 import logo from "../assets/images/logo.png";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const isMobile = windowWidth < 1024;
 
   return (
     <div>
@@ -28,7 +48,11 @@ function Header() {
           <span></span>
         </div>
 
-        <nav style={{ display: menuOpen ? "block" : "none" }}>
+        <nav
+          className={`${
+            isMobile ? (menuOpen ? "nav-visible" : "nav-hidden") : ""
+          }`}
+        >
           <ul>
             <li>
               <Link to="/" onClick={() => setMenuOpen(false)}>
@@ -40,19 +64,22 @@ function Header() {
                 About Us
               </Link>
             </li>
-            <li>
-              <Link to="/products" onClick={() => setMenuOpen(false)}>
+            <li className="dropdown">
+              <Link
+                to="/products"
+                onClick={() => isMobile && setMenuOpen(false)}
+              >
                 Our Products
               </Link>
-              <ul>
+              <ul className="dropdown-content">
                 <li>
                   <Link to="/allperfumes" onClick={() => setMenuOpen(false)}>
-                    - Perfumes
+                    Perfumes
                   </Link>
                 </li>
                 <li>
                   <Link to="/allcleaning" onClick={() => setMenuOpen(false)}>
-                    - Cleaning
+                    Cleaning
                   </Link>
                 </li>
               </ul>

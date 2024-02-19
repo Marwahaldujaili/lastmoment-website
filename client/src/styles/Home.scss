@@ -9,6 +9,9 @@
   img {
     width: 80vw;
     margin: auto;
+    @media (min-width: 1024px) {
+      width: 50vw;
+    }
   }
   p {
     color: $white;

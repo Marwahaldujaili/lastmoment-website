@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from "react";
-import "../styles/AllPerfume.scss"; // Ensure this file exists and is styled appropriately
+import "../styles/AllPerfume.scss";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { styled } from "@mui/material/styles";
 import { Modal, Box } from "@mui/material";
 
-// const ExpandMore = styled((props) => {
-//   const { expand, ...other } = props;
-//   return <IconButton {...other} />;
-// })(({ theme, expand }) => ({
-//   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-//   marginLeft: "auto",
-//   transition: theme.transitions.create("transform", {
-//     duration: theme.transitions.duration.shortest,
-//   }),
-// }));
+const apiUrl = process.env.REACT_APP_API_ENDPOINT;
 
 const AllPerfumes = () => {
   const [perfumes, setPerfumes] = useState([]);
@@ -27,22 +16,26 @@ const AllPerfumes = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     const fetchPerfumes = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch(
-          "http://localhost:5000/product/perfume/view"
-        );
+        const response = await fetch(`${apiUrl}/product/perfume/view`);
+        if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
         setPerfumes(data.data);
       } catch (error) {
-        console.error("Error fetching perfumes:", error);
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchPerfumes();
   }, []);
-
   const handleExpandClick = (id) => {
     setExpandedId(expandedId === id ? null : id);
   };
@@ -56,9 +49,14 @@ const AllPerfumes = () => {
             key={perfume._id}
             sx={{
               minWidth: 100,
-              maxWidth: 200,
+              maxWidth: { xs: 200, md: 400 }, // 'md' corresponds to 900px by default, adjust as needed
               margin: "10px",
               position: "relative",
+              // Use a media query to apply different styles for screens >1024px
+              "@media (min-width:1024px)": {
+                maxWidth: 400, // Increase maxWidth for screens wider than 1024px
+                // Add any other style adjustments here
+              },
             }}
           >
             <CardMedia
@@ -70,8 +68,13 @@ const AllPerfumes = () => {
                 setSelectedImage(perfume.mainImage);
                 setOpenModal(true);
               }}
+              style={{ cursor: "zoom-in" }}
             />
-            <CardContent>
+            <CardContent
+              sx={{
+                backgroundColor: "whitesmoke",
+              }}
+            >
               <Typography
                 gutterBottom
                 variant="h5"
@@ -105,21 +108,6 @@ const AllPerfumes = () => {
                 )}
               </Collapse>
             </CardContent>
-            {/* <ExpandMore
-              expand={expandedId === perfume._id}
-              onClick={(e) => {
-                e.stopPropagation(); // Prevent triggering any parent button actions
-                handleExpandClick(perfume._id);
-              }}
-              aria-expanded={expandedId === perfume._id}
-              aria-label="show more"
-              style={{
-                marginLeft: "auto",
-                marginRight: "16px",
-                marginBottom: "8px",
-              }} // Adjust as needed for layout
-            >
-            </ExpandMore> */}
           </Card>
         ))}
       </div>
@@ -140,12 +128,23 @@ const AllPerfumes = () => {
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
+            "@media (min-width:1024px)": {
+              width: 600, // Larger width for screens wider than 1024px
+              // You can also adjust other styles here if needed, for example:
+              p: 6,
+            },
           }}
         >
           <img
             src={selectedImage}
             alt="Zoomed In"
-            style={{ width: "100%", maxHeight: "80vh" }}
+            style={{
+              width: "100%",
+              maxHeight: "80vh",
+              "@media (min-width:1024px)": {
+                maxHeight: "90vh", // Optionally adjust the maxHeight for larger screens
+              },
+            }}
           />
         </Box>
       </Modal>

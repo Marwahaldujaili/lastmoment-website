@@ -55,8 +55,8 @@ const AllPerfumes = () => {
           <Card
             key={perfume._id}
             sx={{
-              minWidth: 300,
-              maxWidth: 300,
+              minWidth: 100,
+              maxWidth: 200,
               margin: "10px",
               position: "relative",
             }}

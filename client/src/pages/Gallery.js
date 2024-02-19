@@ -1,15 +1,20 @@
 import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-
-function srcset(image, size, rows = 1, cols = 1) {
-  return {
-    src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-    srcSet: `${image}?w=${size * cols}&h=${
-      size * rows
-    }&fit=crop&auto=format&dpr=2 2x`,
-  };
-}
+import "../styles/Gallery.scss";
+import Box from "@mui/material/Box";
+import img2 from "../assets/images/gallery/img2.jpeg";
+import img6 from "../assets/images/gallery/img6.jpeg";
+import img12 from "../assets/images/gallery/img12.jpeg";
+import img16 from "../assets/images/gallery/img16.jpeg";
+import img33 from "../assets/images/gallery/img33.jpeg";
+import img14 from "../assets/images/gallery/img14.jpeg";
+import img30 from "../assets/images/gallery/img30.jpeg";
+import img32 from "../assets/images/gallery/img32.jpeg";
+import img27 from "../assets/images/gallery/img27.jpeg";
+import img8 from "../assets/images/gallery/img8.jpeg";
+import img11 from "../assets/images/gallery/img11.jpeg";
+import img24 from "../assets/images/gallery/img24.jpeg";
 
 export default function Gallery() {
   return (
@@ -25,11 +30,32 @@ export default function Gallery() {
           cols={item.cols || 1}
           rows={item.rows || 1}
         >
-          <img
-            {...srcset(item.img, 121, item.rows, item.cols)}
-            alt={item.title}
-            loading="lazy"
-          />
+          <Box
+            sx={{
+              display: "block",
+              width: "100%",
+              height: "100%",
+              overflow: "hidden",
+              "&:hover": {
+                "& img": {
+                  transform: "scale(1.3)",
+                },
+              },
+              transition: "transform .3s ease-in-out",
+            }}
+          >
+            <img
+              src={item.img}
+              alt={item.title}
+              loading="lazy"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                transition: "transform .3s ease-in-out",
+              }}
+            />
+          </Box>
         </ImageListItem>
       ))}
     </ImageList>
@@ -38,61 +64,63 @@ export default function Gallery() {
 
 const itemData = [
   {
-    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    title: "Breakfast",
+    img: img6,
+    title: "Powdery",
     rows: 2,
     cols: 2,
   },
   {
-    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    title: "Burger",
+    img: img2,
+    title: "Vintage",
   },
   {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
+    img: img14,
+    title: "Soft linen",
   },
   {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
+    img: img12,
+    title: "Gift Set",
     cols: 2,
   },
   {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
+    img: img27,
+    title: "Perfume Set",
     cols: 2,
   },
   {
-    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    title: "Honey",
-    author: "@arwinneil",
+    img: img32,
+    title: "Sunshine",
     rows: 2,
     cols: 2,
   },
   {
-    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-    title: "Basketball",
+    img: img8,
+    title: "Soft linen",
   },
   {
-    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-    title: "Fern",
+    img: img11,
+    title: "Soft linen",
   },
   {
-    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-    title: "Mushrooms",
+    img: img24,
+    title: "Soft linen",
     rows: 2,
-    cols: 2,
+    cols: 4,
   },
   {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
+    img: img16,
+    title: "Soft linen",
   },
   {
-    img: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-    title: "Sea star",
+    img: img11,
+    title: "Soft linen",
   },
   {
-    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
-    title: "Bike",
-    cols: 2,
+    img: img30,
+    title: "Soft linen",
+  },
+  {
+    img: img33,
+    title: "Soft linen",
   },
 ];

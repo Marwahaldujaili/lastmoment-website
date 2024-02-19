@@ -44,4 +44,3 @@ app.use("/user/admin", adminRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
 });
-FRONT_END=http://localhost:3000 || https://lastmoment-testing.vercel.app/

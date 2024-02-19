@@ -14,7 +14,6 @@ const DB_URI = process.env.DB_URI;
 const app = express();
 app.use(cookieParser());
 
-
 app.use(
   cors((req, callback) => {
     const allowedOrigins = ["https://lastmoment-testing.vercel.app"]; // List your origins
@@ -28,13 +27,6 @@ app.use(
     callback(null, corsOptions); // Callback expects two parameters: error and options
   })
 );
-// =======
-// const corsOptions = {
-//   origin: 'https://lastmoment-testing.vercel.app',
-//   optionsSuccessStatus: 200 
-// };
-
-// app.use(cors(corsOptions));
 
 mongoose
   .connect(DB_URI)
@@ -52,4 +44,3 @@ app.use("/user/admin", adminRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
 });
-FRONT_END=http://localhost:3000 || https://lastmoment-testing.vercel.app/

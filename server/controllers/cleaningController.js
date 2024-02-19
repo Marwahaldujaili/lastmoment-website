@@ -1,7 +1,5 @@
 import CleaningProduct from "../models/CleaningProducts.js";
 
-const BASE_URL = "http://localhost:5000/cleaning/uploads/";
-
 // Create Cleaning Product with multiple image upload
 export const createCleaningProduct = async (req, res) => {
   try {
@@ -32,7 +30,7 @@ export const createCleaningProduct = async (req, res) => {
       pricePerCarton,
       pricePerPiece,
       mainImage: mainImageFilename,
-      detailsImage: detailsImageFilename || null, // Set to null if detailsImage is not provided
+      detailsImage: detailsImageFilename || null,
     };
 
     const newCleaningProduct = new CleaningProduct(newCleaningProductData);
@@ -49,14 +47,12 @@ export const createCleaningProduct = async (req, res) => {
 // View all cleaning Products
 export const viewAllCleaning = async (req, res) => {
   try {
-    // Retrieve all cleaning products from the database
     const allCleaning = await CleaningProduct.find();
-    // Map the products to include the full path to the images
     const productsWithFullPath = allCleaning.map((product) => ({
       ...product.toObject(),
-      mainImage: `${BASE_URL}${product.mainImage}`,
+      mainImage: `${process.env.CLEANING_BASE_URL}${product.mainImage}`,
       detailsImage: product.detailsImage
-        ? `${BASE_URL}${product.detailsImage}`
+        ? `${process.env.CLEANING_BASE_URL}${product.detailsImage}`
         : null,
     }));
     res.status(200).json({ success: true, data: productsWithFullPath });
@@ -70,22 +66,17 @@ export const viewAllCleaning = async (req, res) => {
 export const getSingleCleaningProduct = async (req, res) => {
   try {
     const { productId } = req.params;
-
-    // Find the cleaning product by productId
     const cleaningProduct = await CleaningProduct.findById(productId);
-
     if (!cleaningProduct) {
       return res
         .status(404)
         .json({ success: false, error: "Cleaning product not found" });
     }
-
-    // Map the product to include the full path to the images
     const productWithFullPath = {
       ...cleaningProduct.toObject(),
-      mainImage: `${BASE_URL}${cleaningProduct.mainImage}`,
+      mainImage: `${process.env.CLEANING_BASE_URL}${cleaningProduct.mainImage}`,
       detailsImage: cleaningProduct.detailsImage
-        ? `${BASE_URL}${cleaningProduct.detailsImage}`
+        ? `${process.env.CLEANING_BASE_URL}${cleaningProduct.detailsImage}`
         : null,
     };
 
@@ -101,12 +92,9 @@ export const editCleaningProduct = async (req, res) => {
   try {
     const { productId } = req.params;
     const updatedFields = req.body;
-
-    // Check if req.files exists (multer adds this when files are uploaded)
     if (req.files && req.files.length > 0) {
       updatedFields.images = req.files.map((file) => file.filename);
     }
-
     const cleaningProduct = await CleaningProduct.findByIdAndUpdate(
       productId,
       updatedFields,
@@ -131,7 +119,6 @@ export const deleteCleaningProduct = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    // Find the cleaning product by productId and delete it
     const result = await CleaningProduct.deleteOne({ _id: productId });
 
     if (result.deletedCount === 0) {

@@ -7,24 +7,30 @@ import IconButton from "@mui/material/IconButton";
 import EmailIcon from "@mui/icons-material/Email";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import { Box } from "@mui/material";
 
 const Contact = () => {
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
         alignItems: "center",
         gap: "20px",
         padding: "20px",
-        color: "#8c3027",
+        marginTop: "100px",
+        "@media (min-width: 768px)": {
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-around",
+          width: "100%", // Ensures the container takes the full width to properly space the cards
+        },
       }}
     >
       <Card
         sx={{
-          width: 200,
-          maxWidth: 300,
+          width: { xs: 200, sm: 300, md: 300 },
           backgroundColor: "#f0f8ff",
           display: "flex",
           flexDirection: "column",
@@ -55,8 +61,8 @@ const Contact = () => {
             sx={{
               color: "#8c3027",
               "&:hover": {
-                color: "#f05b3f", // Darker shade on hover
-                backgroundColor: "rgba(255, 255, 255, 0.2)", // Slight white background on hover
+                color: "#f05b3f",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
               },
             }}
           >
@@ -64,10 +70,10 @@ const Contact = () => {
           </IconButton>
         </CardActions>
       </Card>
+
       <Card
         sx={{
-          width: 200,
-          maxWidth: 300,
+          width: { xs: 200, sm: 300, md: 300 },
           backgroundColor: "#f0f8ff",
           display: "flex",
           flexDirection: "column",
@@ -98,8 +104,8 @@ const Contact = () => {
             sx={{
               color: "#8c3027",
               "&:hover": {
-                color: "#f05b3f", // Darker shade on hover
-                backgroundColor: "rgba(255, 255, 255, 0.2)", // Slight white background on hover
+                color: "#f05b3f",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
               },
             }}
           >
@@ -107,10 +113,10 @@ const Contact = () => {
           </IconButton>
         </CardActions>
       </Card>
+
       <Card
         sx={{
-          width: 200,
-          maxWidth: 300,
+          width: { xs: 200, sm: 300, md: 300 },
           backgroundColor: "#f0f8ff",
           display: "flex",
           flexDirection: "column",
@@ -141,8 +147,8 @@ const Contact = () => {
             sx={{
               color: "#8c3027",
               "&:hover": {
-                color: "#f05b3f", // Darker shade on hover
-                backgroundColor: "rgba(255, 255, 255, 0.2)", // Slight white background on hover
+                color: "#f05b3f",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
               },
             }}
           >
@@ -150,7 +156,7 @@ const Contact = () => {
           </IconButton>
         </CardActions>
       </Card>
-    </div>
+    </Box>
   );
 };
 

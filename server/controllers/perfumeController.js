@@ -1,7 +1,5 @@
 import Perfume from "../models/PerfumeProducts.js";
 
-const BASE_URL = "http://localhost:5000/perfume/uploads/";
-
 // Create Controller for Perfume Products
 export const createPerfume = async (req, res) => {
   try {
@@ -23,7 +21,7 @@ export const createPerfume = async (req, res) => {
       discountedPrice,
       description,
       mainImage: mainImageFilename,
-      detailsImage: detailsImageFilename || null, // Set to null if detailsImage is not provided
+      detailsImage: detailsImageFilename || null,
     };
 
     const newPerfume = new Perfume(newPerfumeData);
@@ -43,9 +41,11 @@ export const viewPerfume = async (req, res) => {
     const allPerfumes = await Perfume.find();
     const productsWithFullPath = allPerfumes.map((product) => ({
       ...product.toObject(),
-      mainImage: product.mainImage ? `${BASE_URL}${product.mainImage}` : null,
+      mainImage: product.mainImage
+        ? `${process.env.PERFUME_BASE_URL}${product.mainImage}`
+        : null,
       detailsImage: product.detailsImage
-        ? `${BASE_URL}${product.detailsImage}`
+        ? `${process.env.PERFUME_BASE_URL}${product.detailsImage}`
         : null,
     }));
     res.status(200).json({ success: true, data: productsWithFullPath });
@@ -67,15 +67,13 @@ export const viewSinglePerfume = async (req, res) => {
         .status(404)
         .json({ success: false, error: "Perfume product not found" });
     }
-
-    // Construct the object to include the full paths for images
     const productWithFullPath = {
       ...singlePerfume.toObject(),
       mainImage: singlePerfume.mainImage
-        ? `${BASE_URL}${singlePerfume.mainImage}`
+        ? `${process.env.PERFUME_BASE_URL}${singlePerfume.mainImage}`
         : null,
       detailsImage: singlePerfume.detailsImage
-        ? `${BASE_URL}${singlePerfume.detailsImage}`
+        ? `${process.env.PERFUME_BASE_URL}${singlePerfume.detailsImage}`
         : null,
     };
 
@@ -106,7 +104,6 @@ export const editPerfume = async (req, res) => {
         ...(detailsImageFile && { detailsImage: detailsImageFile }),
       };
     }
-
     const updatedPerfume = await Perfume.findByIdAndUpdate(
       productId,
       updatedFields,
@@ -118,7 +115,6 @@ export const editPerfume = async (req, res) => {
         .status(404)
         .json({ success: false, error: "Perfume product not found" });
     }
-
     res.status(200).json({ success: true, data: updatedPerfume });
   } catch (error) {
     console.error("Error editing perfume product:", error);
@@ -130,10 +126,7 @@ export const editPerfume = async (req, res) => {
 export const deletePerfume = async (req, res) => {
   try {
     const { productId } = req.params; // Assuming productId is part of the route parameters
-
-    // Find the perfume product by productId and delete it
     const deletedPerfume = await Perfume.findByIdAndDelete(productId);
-
     if (!deletedPerfume) {
       return res
         .status(404)

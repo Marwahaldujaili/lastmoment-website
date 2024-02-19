@@ -191,8 +191,7 @@ const AllCleaning = () => {
             boxShadow: 24,
             p: 4,
             "@media (min-width:1024px)": {
-              width: 600, // Larger width for screens wider than 1024px
-              // You can also adjust other styles here if needed, for example:
+              width: 600,
               p: 6,
             },
           }}
@@ -204,7 +203,7 @@ const AllCleaning = () => {
               width: "100%",
               maxHeight: "80vh",
               "@media (min-width:1024px)": {
-                maxHeight: "90vh", // Optionally adjust the maxHeight for larger screens
+                maxHeight: "90vh",
               },
             }}
           />

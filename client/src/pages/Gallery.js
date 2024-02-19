@@ -28,7 +28,7 @@ export default function Gallery() {
         }}
         variant="quilted"
         cols={4}
-        rowHeight={{ xs: 121, md: 200 }} // Responsive row height
+        rowHeight={{ xs: 121, md: 200 }}
       >
         {itemData.map((item) => (
           <ImageListItem

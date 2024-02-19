@@ -13,13 +13,12 @@ const DB_URI = process.env.DB_URI;
 
 const app = express();
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: process.env.FRONT_END || https://lastmoment-testing.vercel.app/
- ,
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: 'https://lastmoment-testing.vercel.app',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 
 mongoose
   .connect(DB_URI)

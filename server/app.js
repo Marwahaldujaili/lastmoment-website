@@ -15,7 +15,8 @@ const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.FRONT_END,
+    origin: process.env.FRONT_END || https://lastmoment-testing.vercel.app/
+ ,
     credentials: true,
   })
 );
@@ -36,3 +37,4 @@ app.use("/user/admin", adminRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
 });
+FRONT_END=http://localhost:3000 || https://lastmoment-testing.vercel.app/

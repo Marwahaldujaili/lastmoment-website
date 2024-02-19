@@ -13,12 +13,20 @@ const DB_URI = process.env.DB_URI;
 
 const app = express();
 app.use(cookieParser());
-const corsOptions = {
-  origin: 'https://lastmoment-testing.vercel.app',
-  optionsSuccessStatus: 200 
-};
 
-app.use(cors(corsOptions));
+app.use(
+  cors((req, callback) => {
+    const allowedOrigins = ["https://lastmoment-testing.vercel.app"]; // List your origins
+    const origin = req.header("Origin");
+    let corsOptions = { origin: false }; // Disallow CORS by default
+
+    if (allowedOrigins.includes(origin)) {
+      corsOptions.origin = origin; // Reflect the request origin
+    }
+
+    callback(null, corsOptions); // Callback expects two parameters: error and options
+  })
+);
 
 mongoose
   .connect(DB_URI)

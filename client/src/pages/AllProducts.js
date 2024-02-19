@@ -1,9 +1,15 @@
 import React from "react";
+import AllCleaning from "./AllCleaning";
+import AllPerfumes from "./AllPerfumes";
+import "../styles/AllProducts.scss";
 
 function AllProducts() {
   return (
-    <div>
-      <h1>ALL Products</h1>
+    <div className="container">
+      <h1>Our products</h1>
+      <p className="this-p">Browse all our products</p>
+      <AllPerfumes />
+      <AllCleaning />
     </div>
   );
 }

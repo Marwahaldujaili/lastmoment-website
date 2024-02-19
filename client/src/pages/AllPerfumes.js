@@ -10,16 +10,16 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 import { Modal, Box } from "@mui/material";
 
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+// const ExpandMore = styled((props) => {
+//   const { expand, ...other } = props;
+//   return <IconButton {...other} />;
+// })(({ theme, expand }) => ({
+//   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+//   marginLeft: "auto",
+//   transition: theme.transitions.create("transform", {
+//     duration: theme.transitions.duration.shortest,
+//   }),
+// }));
 
 const AllPerfumes = () => {
   const [perfumes, setPerfumes] = useState([]);
@@ -55,8 +55,8 @@ const AllPerfumes = () => {
           <Card
             key={perfume._id}
             sx={{
-              minWidth: 300,
-              maxWidth: 300,
+              minWidth: 100,
+              maxWidth: 200,
               margin: "10px",
               position: "relative",
             }}
@@ -79,7 +79,8 @@ const AllPerfumes = () => {
                 onClick={() => handleExpandClick(perfume._id)}
                 style={{ cursor: "pointer" }}
               >
-                {perfume.productName}
+                {perfume.productName} <br />
+                <ExpandMoreIcon />
               </Typography>
               <Collapse
                 in={expandedId === perfume._id}
@@ -87,12 +88,24 @@ const AllPerfumes = () => {
                 unmountOnExit
               >
                 <Typography variant="body2" color="text.secondary">
-                  Capacity: {perfume.capacity}
+                  <b>Capacity:</b> {perfume.capacity}
                 </Typography>
-                {/* Additional details */}
+                <Typography variant="body2" color="text.secondary">
+                  <b>Price:</b> {perfume.price} AED
+                </Typography>
+                {perfume.description && (
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ whiteSpace: "pre-line" }}
+                  >
+                    <b>Aromatic Bases:</b> <br />
+                    {perfume.description}
+                  </Typography>
+                )}
               </Collapse>
             </CardContent>
-            <ExpandMore
+            {/* <ExpandMore
               expand={expandedId === perfume._id}
               onClick={(e) => {
                 e.stopPropagation(); // Prevent triggering any parent button actions
@@ -106,8 +119,7 @@ const AllPerfumes = () => {
                 marginBottom: "8px",
               }} // Adjust as needed for layout
             >
-              <ExpandMoreIcon />
-            </ExpandMore>
+            </ExpandMore> */}
           </Card>
         ))}
       </div>

@@ -10,16 +10,14 @@ import IconButton from "@mui/material/IconButton";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Modal, Box } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const AllCleaning = () => {
   const [cleaningProducts, setCleaningProducts] = useState([]);
   const [expandedId, setExpandedId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
-
-  const handleExpandClick = (id) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
+  const [groupedProducts, setGroupedProducts] = useState({});
 
   useEffect(() => {
     const fetchCleaningProducts = async () => {
@@ -30,7 +28,7 @@ const AllCleaning = () => {
         const data = await response.json();
         const productsWithImageState = data.data.map((product) => ({
           ...product,
-          currentImage: "mainImage", // Initialize with 'mainImage'
+          currentImage: "mainImage",
         }));
         setCleaningProducts(productsWithImageState);
       } catch (error) {
@@ -41,14 +39,34 @@ const AllCleaning = () => {
     fetchCleaningProducts();
   }, []);
 
+  useEffect(() => {
+    const groupByProductName = cleaningProducts.reduce((acc, product) => {
+      const key = product.productName;
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(product);
+      return acc;
+    }, {});
+
+    setGroupedProducts(groupByProductName);
+  }, [cleaningProducts]);
+
+  const handleExpandClick = (id) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
+
   const toggleImage = (id) => {
     setCleaningProducts(
       cleaningProducts.map((product) => {
         if (product._id === id) {
+          // Check if detailsImage exists and is not null or empty
+          const hasDetailsImage =
+            product.detailsImage && product.detailsImage.trim() !== "";
           return {
             ...product,
             currentImage:
-              product.currentImage === "mainImage"
+              product.currentImage === "mainImage" && hasDetailsImage
                 ? "detailsImage"
                 : "mainImage",
           };
@@ -60,81 +78,89 @@ const AllCleaning = () => {
 
   return (
     <div className="cleaning-prod-container">
-      <h1>Cleaning Products</h1>
-      <div className="cleaning-prod">
-        {cleaningProducts.map((product) => (
-          <Card
-            key={product._id}
-            sx={{
-              minWidth: 300,
-              maxWidth: 300,
-              margin: "10px",
-              position: "relative",
-            }}
-          >
-            <CardActionArea>
-              <div className="image-container">
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={product[product.currentImage]}
-                  alt={`${product.productName} - ${
-                    product.currentImage === "mainImage" ? "Main" : "Details"
-                  }`}
-                  onClick={() => {
-                    setSelectedImage(product[product.currentImage]);
-                    setOpenModal(true);
-                  }}
-                />
-                <IconButton
-                  className="image-switch-icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleImage(product._id);
-                  }}
-                  sx={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "0%",
-                    transform: "translateY(-50%)",
-                  }}
+      <h2>Cleaning Products</h2>
+      {Object.entries(groupedProducts).map(([productName, products]) => (
+        <div key={productName}>
+          <h3>{productName}</h3>
+          <div className="cleaning-prod">
+            {products.map((product) => (
+              <Card
+                key={product._id}
+                sx={{
+                  minWidth: 200,
+                  maxWidth: { xs: 200, sm: 400, md: 600 }, // Responsive max width
+                  margin: "10px",
+                  position: "relative",
+                }}
+              >
+                <CardActionArea>
+                  <div className="image-container">
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={product[product.currentImage]}
+                      alt={`${product.productName} - ${
+                        product.currentImage === "mainImage"
+                          ? "Main"
+                          : "Details"
+                      }`}
+                      onClick={() => {
+                        setSelectedImage(product[product.currentImage]);
+                        setOpenModal(true);
+                      }}
+                    />
+                    <IconButton
+                      className="image-switch-icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleImage(product._id);
+                      }}
+                      sx={{
+                        position: "absolute",
+                        top: "50%",
+                        right: "0%",
+                        transform: "translateY(-50%)",
+                      }}
+                    >
+                      {product.currentImage === "mainImage" ? (
+                        <ArrowForwardIosIcon />
+                      ) : (
+                        <ArrowBackIosIcon />
+                      )}
+                    </IconButton>
+                  </div>
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      variant="body2"
+                      component="div"
+                      onClick={() => handleExpandClick(product._id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {product.scent} {product.productName}
+                      <ExpandMoreIcon />
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <Collapse
+                  in={expandedId === product._id}
+                  timeout="auto"
+                  unmountOnExit
                 >
-                  {product.currentImage === "mainImage" ? (
-                    <ArrowForwardIosIcon />
-                  ) : (
-                    <ArrowBackIosIcon />
-                  )}
-                </IconButton>
-              </div>
-              <CardContent>
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  component="div"
-                  onClick={() => handleExpandClick(product._id)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {product.productName}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Scent: {product.scent}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <Collapse
-              in={expandedId === product._id}
-              timeout="auto"
-              unmountOnExit
-            >
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  Price: {product.pricePerPiece} AED
-                </Typography>
-              </CardContent>
-            </Collapse>
-          </Card>
-        ))}
-      </div>
+                  <CardContent>
+                    <Typography variant="body2" color="text.secondary">
+                      Scent: {product.scent}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Price: {product.pricePerPiece} AED
+                    </Typography>
+                  </CardContent>
+                </Collapse>
+              </Card>
+            ))}
+          </div>
+        </div>
+      ))}
       <Modal
         open={openModal}
         onClose={() => setOpenModal(false)}

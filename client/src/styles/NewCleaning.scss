@@ -92,6 +92,8 @@
       width: 50%;
       background: $maroon;
       text-align: center;
+      border-radius: 4px;
+
       &:hover {
         background-color: $red;
       }

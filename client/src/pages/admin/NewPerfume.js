@@ -7,7 +7,6 @@ function NewPerfume() {
   const apiUrl = process.env.REACT_APP_API_ENDPOINT;
   const navigate = useNavigate();
   const [mainImageName, setMainImageName] = useState("");
-  // const [detailsImageName, setDetailsImageName] = useState("");
 
   const [formData, setFormData] = useState({
     productName: "",
@@ -16,7 +15,6 @@ function NewPerfume() {
     discountedPrice: "",
     description: "",
     mainImage: null,
-    // detailsImage: null,
   });
 
   const handleImageChange = async (e) => {
@@ -28,17 +26,13 @@ function NewPerfume() {
         maxWidth: 1800,
         maxHeight: 1800,
         success: (compressedImage) => {
-          // Append the compressed file directly, not its Blob URL
           setFormData((prevState) => ({
             ...prevState,
             [name]: compressedImage,
           }));
           if (name === "mainImage") {
-            setMainImageName(files[0].name); // Display the original file name
+            setMainImageName(files[0].name);
           }
-          // else if (name === "detailsImage") {
-          //   setDetailsImageName(files[0].name);
-          // }
         },
         error: (err) => {
           console.error("Error compressing image:", err);
@@ -73,7 +67,7 @@ function NewPerfume() {
 
       if (response.ok) {
         console.log("Perfume created", data);
-        navigate("/allperfumes"); // Adjust navigation path
+        navigate("/allperfumes");
       } else {
         console.log("Error", data.error);
       }
@@ -160,30 +154,6 @@ function NewPerfume() {
               style={{ display: "none" }}
             />
           </div>
-
-          {/* <div className="form-group image-upload-group">
-            <label>Details Image</label>
-            <button
-              type="button"
-              className="image-upload-button"
-              onClick={() =>
-                document.getElementById("detailsImageInput").click()
-              }
-            >
-              +
-            </button>
-            {detailsImageName && (
-              <span className="file-name">{detailsImageName}</span>
-            )}
-            <input
-              id="detailsImageInput"
-              type="file"
-              name="detailsImage"
-              accept="image/*"
-              onChange={handleImageChange}
-              style={{ display: "none" }}
-            />
-          </div> */}
         </div>
         <button type="submit">Add</button>
         <Link to="/admin/profile">

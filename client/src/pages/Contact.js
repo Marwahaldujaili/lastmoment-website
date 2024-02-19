@@ -55,8 +55,8 @@ const Contact = () => {
             sx={{
               color: "#8c3027",
               "&:hover": {
-                color: "#f05b3f", // Darker shade on hover
-                backgroundColor: "rgba(255, 255, 255, 0.2)", // Slight white background on hover
+                color: "#f05b3f",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
               },
             }}
           >
@@ -98,8 +98,8 @@ const Contact = () => {
             sx={{
               color: "#8c3027",
               "&:hover": {
-                color: "#f05b3f", // Darker shade on hover
-                backgroundColor: "rgba(255, 255, 255, 0.2)", // Slight white background on hover
+                color: "#f05b3f",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
               },
             }}
           >
@@ -141,8 +141,8 @@ const Contact = () => {
             sx={{
               color: "#8c3027",
               "&:hover": {
-                color: "#f05b3f", // Darker shade on hover
-                backgroundColor: "rgba(255, 255, 255, 0.2)", // Slight white background on hover
+                color: "#f05b3f",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
               },
             }}
           >

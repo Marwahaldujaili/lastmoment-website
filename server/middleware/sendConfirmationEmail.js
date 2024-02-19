@@ -1,20 +1,18 @@
 import nodemailer from "nodemailer";
 
-const FRONT_END_URL = "http://localhost:5000";
-
 export const sendConfirmationEmail = (email, confirmationToken) => {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: process.env.EMAIL_SRV,
     auth: {
-      user: "aldujailimarwa@gmail.com",
-      pass: "hxoeezqvcrrhgywo",
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
-  const confirmationLink = `${FRONT_END_URL}/user/admin/confirm/${confirmationToken}`;
+  const confirmationLink = `${process.env.FRONT_END}/user/admin/confirm/${confirmationToken}`;
 
   const mailOptions = {
-    from: "aldujailimarwa@gmail.com",
+    from: process.env.EMAIL_USER,
     to: email,
     subject: "Email Confirmation",
     html: `Click <a href="${confirmationLink}">here</a> to confirm your email.`,

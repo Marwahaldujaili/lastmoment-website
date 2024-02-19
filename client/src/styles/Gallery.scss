@@ -3,6 +3,7 @@
 .gallery-container {
   h1 {
     @include pageHeader;
+    margin-bottom: 20px;
   }
   p {
     color: $white;

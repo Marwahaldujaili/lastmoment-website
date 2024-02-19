@@ -15,7 +15,6 @@ const AllPerfumes = () => {
   const [expandedId, setExpandedId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -49,13 +48,11 @@ const AllPerfumes = () => {
             key={perfume._id}
             sx={{
               minWidth: 100,
-              maxWidth: { xs: 200, md: 400 }, // 'md' corresponds to 900px by default, adjust as needed
+              maxWidth: { xs: 200, md: 400 },
               margin: "10px",
               position: "relative",
-              // Use a media query to apply different styles for screens >1024px
               "@media (min-width:1024px)": {
-                maxWidth: 400, // Increase maxWidth for screens wider than 1024px
-                // Add any other style adjustments here
+                maxWidth: 400,
               },
             }}
           >
@@ -129,8 +126,7 @@ const AllPerfumes = () => {
             boxShadow: 24,
             p: 4,
             "@media (min-width:1024px)": {
-              width: 600, // Larger width for screens wider than 1024px
-              // You can also adjust other styles here if needed, for example:
+              width: 600,
               p: 6,
             },
           }}
@@ -142,7 +138,7 @@ const AllPerfumes = () => {
               width: "100%",
               maxHeight: "80vh",
               "@media (min-width:1024px)": {
-                maxHeight: "90vh", // Optionally adjust the maxHeight for larger screens
+                maxHeight: "90vh",
               },
             }}
           />

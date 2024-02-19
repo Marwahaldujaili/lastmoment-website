@@ -15,7 +15,7 @@ const app = express();
 app.use(cookieParser());
 const corsOptions = {
   origin: 'https://lastmoment-testing.vercel.app',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200 
 };
 
 app.use(cors(corsOptions));

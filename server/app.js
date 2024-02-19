@@ -13,10 +13,18 @@ const DB_URI = process.env.DB_URI;
 
 const app = express();
 app.use(cookieParser());
+
 app.use(
-  cors({
-    origin: process.env.FRONT_END,
-    credentials: true,
+  cors((req, callback) => {
+    const allowedOrigins = ["https://lastmoment-testing.vercel.app"]; // List your origins
+    const origin = req.header("Origin");
+    let corsOptions = { origin: false }; // Disallow CORS by default
+
+    if (allowedOrigins.includes(origin)) {
+      corsOptions.origin = origin; // Reflect the request origin
+    }
+
+    callback(null, corsOptions); // Callback expects two parameters: error and options
   })
 );
 

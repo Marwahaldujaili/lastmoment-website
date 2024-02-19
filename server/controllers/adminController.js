@@ -86,7 +86,7 @@ export const getConfirmation = async (req, res) => {
     console.log("Admin confirmed:", admin);
 
     // Redirect to the login page after successful confirmation
-    // res.redirect(`${FRONT_END_URL}`);
+    res.redirect(`${FRONT_END_URL}`);
   } catch (error) {
     console.error("Error confirming email:", error);
     // Handle token verification errors or other issues

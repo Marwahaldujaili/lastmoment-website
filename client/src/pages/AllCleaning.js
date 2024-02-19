@@ -12,6 +12,8 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Modal, Box } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
+const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+
 const AllCleaning = () => {
   const [cleaningProducts, setCleaningProducts] = useState([]);
   const [expandedId, setExpandedId] = useState(null);
@@ -22,9 +24,7 @@ const AllCleaning = () => {
   useEffect(() => {
     const fetchCleaningProducts = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:5000/product/cleaning/view"
-        );
+        const response = await fetch(`${apiUrl}/product/cleaning/view`);
         const data = await response.json();
         const productsWithImageState = data.data.map((product) => ({
           ...product,
@@ -60,7 +60,6 @@ const AllCleaning = () => {
     setCleaningProducts(
       cleaningProducts.map((product) => {
         if (product._id === id) {
-          // Check if detailsImage exists and is not null or empty
           const hasDetailsImage =
             product.detailsImage && product.detailsImage.trim() !== "";
           return {
@@ -88,16 +87,20 @@ const AllCleaning = () => {
                 key={product._id}
                 sx={{
                   minWidth: 200,
-                  maxWidth: { xs: 200, sm: 400, md: 600 }, // Responsive max width
+                  maxWidth: { xs: 200, md: 600 },
                   margin: "10px",
                   position: "relative",
+                  "@media (min-width:1024px)": {
+                    width: 400,
+                    maxWidth: 600,
+                  },
                 }}
               >
                 <CardActionArea>
                   <div className="image-container">
                     <CardMedia
                       component="img"
-                      height="200"
+                      height="300"
                       image={product[product.currentImage]}
                       alt={`${product.productName} - ${
                         product.currentImage === "mainImage"
@@ -107,6 +110,11 @@ const AllCleaning = () => {
                       onClick={() => {
                         setSelectedImage(product[product.currentImage]);
                         setOpenModal(true);
+                      }}
+                      style={{
+                        cursor: "zoom-in",
+                        height: { xs: 200, md: 400 },
+                        width: { xs: 200, md: 400 },
                       }}
                     />
                     <IconButton
@@ -129,7 +137,12 @@ const AllCleaning = () => {
                       )}
                     </IconButton>
                   </div>
-                  <CardContent>
+                  <CardContent
+                    sx={{
+                      backgroundColor: "whitesmoke",
+                    }}
+                  >
+                    {" "}
                     <Typography
                       gutterBottom
                       variant="body2"
@@ -177,9 +190,24 @@ const AllCleaning = () => {
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
+            "@media (min-width:1024px)": {
+              width: 600, // Larger width for screens wider than 1024px
+              // You can also adjust other styles here if needed, for example:
+              p: 6,
+            },
           }}
         >
-          <img src={selectedImage} alt="Zoomed In" style={{ width: "100%" }} />
+          <img
+            src={selectedImage}
+            alt="Zoomed In"
+            style={{
+              width: "100%",
+              maxHeight: "80vh",
+              "@media (min-width:1024px)": {
+                maxHeight: "90vh", // Optionally adjust the maxHeight for larger screens
+              },
+            }}
+          />
         </Box>
       </Modal>
     </div>

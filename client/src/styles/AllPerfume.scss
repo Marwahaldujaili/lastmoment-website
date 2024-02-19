@@ -8,30 +8,12 @@
   align-items: center;
   h1 {
     @include pageHeader;
-    font-size: 1.2rem;
+    // font-size: 1.2rem;
   }
 
   .perfume-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-  }
-}
-.perfume-container .perfume-grid .Card {
-  .image-container {
-    position: relative;
-
-    .image-switch-icon {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      background-color: rgba(
-        255,
-        255,
-        255,
-        0.5
-      ); // Optional, for better visibility
-    }
   }
 }

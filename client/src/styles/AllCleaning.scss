@@ -17,46 +17,5 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px; // Increase the gap for better spacing
-
-    // Adjustments for tablets
-    @media (min-width: 768px) {
-      justify-content: space-around;
-    }
-
-    // Adjustments for desktops and larger screens
-    @media (min-width: 1024px) {
-      justify-content: space-between;
-    }
-  }
-}
-
-.cleaning-prod-container .cleaning-prod .Card {
-  min-width: 100px; // Ensure cards have a minimum width on smaller screens
-  max-width: 200px; // Default max width for mobile devices
-  margin: 10px; // Ensure there's some spacing around each card
-  position: relative;
-
-  .image-container {
-    position: relative;
-
-    .image-switch-icon {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      background-color: rgba(255, 255, 255, 0.5); // For better visibility
-    }
-  }
-
-  // Responsive adjustments for Card on tablet screens
-  @media (min-width: 768px) {
-    min-width: 800px; // Increase minimum width for tablets
-    max-width: 400px; // Increase maximum width for tablets
-  }
-
-  // Responsive adjustments for Card on desktop screens
-  @media (min-width: 1024px) {
-    min-width: 400px; // Further increase minimum width for desktops
-    max-width: 400px; // Further increase maximum width for desktops
   }
 }

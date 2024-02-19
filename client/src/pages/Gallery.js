@@ -18,47 +18,54 @@ import img24 from "../assets/images/gallery/img24.jpeg";
 
 export default function Gallery() {
   return (
-    <ImageList
-      sx={{ width: 300, height: "auto", margin: "auto" }}
-      variant="quilted"
-      cols={4}
-      rowHeight={121}
-    >
-      {itemData.map((item) => (
-        <ImageListItem
-          key={item.img}
-          cols={item.cols || 1}
-          rows={item.rows || 1}
-        >
-          <Box
-            sx={{
-              display: "block",
-              width: "100%",
-              height: "100%",
-              overflow: "hidden",
-              "&:hover": {
-                "& img": {
-                  transform: "scale(1.3)",
-                },
-              },
-              transition: "transform .3s ease-in-out",
-            }}
+    <div className="gallery-container">
+      <h1>Photo Gallery</h1>
+      <ImageList
+        sx={{
+          width: { xs: 300, sm: 500, md: 700, lg: 900 },
+          height: "auto",
+          margin: "auto",
+        }}
+        variant="quilted"
+        cols={4}
+        rowHeight={{ xs: 121, md: 200 }} // Responsive row height
+      >
+        {itemData.map((item) => (
+          <ImageListItem
+            key={item.img}
+            cols={item.cols || 1}
+            rows={item.rows || 1}
           >
-            <img
-              src={item.img}
-              alt={item.title}
-              loading="lazy"
-              style={{
+            <Box
+              sx={{
+                display: "block",
                 width: "100%",
                 height: "100%",
-                objectFit: "cover",
+                overflow: "hidden",
+                "&:hover": {
+                  "& img": {
+                    transform: "scale(1.3)",
+                  },
+                },
                 transition: "transform .3s ease-in-out",
               }}
-            />
-          </Box>
-        </ImageListItem>
-      ))}
-    </ImageList>
+            >
+              <img
+                src={item.img}
+                alt={item.title}
+                loading="lazy"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  transition: "transform .3s ease-in-out",
+                }}
+              />
+            </Box>
+          </ImageListItem>
+        ))}
+      </ImageList>
+    </div>
   );
 }
 

@@ -5,6 +5,11 @@ import {
   viewCart,
   clearCart,
 } from "../controllers/cartController.js";
+import {
+  createCheckoutSession,
+  handleStripeWebhook,
+} from "../controllers/checkoutController.js";
+import bodyParser from "body-parser";
 
 const router = express.Router();
 
@@ -18,5 +23,15 @@ router.get("/view/:sessionId", viewCart);
 
 // Clear cart
 router.post("/clear/:sessionId", clearCart);
+
+//checkout
+router.post("/checkout", createCheckoutSession);
+
+//webhook
+router.post(
+  "/webhook",
+  bodyParser.raw({ type: "application/json" }),
+  handleStripeWebhook
+);
 
 export default router;

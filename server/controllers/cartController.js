@@ -4,24 +4,32 @@ import Cart from "../models/Cart.js";
 
 //fetch product details and price
 
-const fetchProductDetails = async (productId, productType) => {
+export const fetchProductDetails = async (productId, productType) => {
+  // Normalize the productType to lowercase
+  const normalizedProductType = productType.toLowerCase();
+
   let productDetails = {};
-  switch (productType) {
-    case "cleaningProduct":
+  switch (normalizedProductType) {
+    case "cleaningproduct": // Now expecting lowercase
       const cleaningProduct = await CleaningProduct.findById(productId);
       if (!cleaningProduct) throw new Error("Cleaning product not found");
       productDetails = {
+        name: cleaningProduct.productName,
         price: cleaningProduct.pricePerPiece,
         ...cleaningProduct.toObject(),
       };
       break;
-    case "perfume":
+    case "perfume": // Already lowercase
       const perfume = await Perfume.findById(productId);
       if (!perfume) throw new Error("Perfume product not found");
-      productDetails = { price: perfume.price, ...perfume.toObject() };
+      productDetails = {
+        name: perfume.productName,
+        price: perfume.price,
+        ...perfume.toObject(),
+      };
       break;
     default:
-      throw new Error("Invalid product type");
+      throw new Error(`Invalid product type: ${productType}`);
   }
   return productDetails;
 };

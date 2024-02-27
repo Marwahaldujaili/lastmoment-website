@@ -4,7 +4,7 @@ import {
   createPerfume,
   deletePerfume,
   editPerfume,
-  viewPerfume,
+  viewAllPerfumes,
   viewSinglePerfume,
 } from "../controllers/perfumeController.js";
 import { authenticateAdmin } from "../middleware/authenticateAdmin.js";
@@ -43,8 +43,8 @@ router.post(
   createPerfume
 );
 
-router.get("/view", viewPerfume);
-router.get("/:productId/view", viewSinglePerfume);
+router.get("/viewall", viewAllPerfumes);
+router.get("/:productId", viewSinglePerfume);
 
 router.put(
   "/:productId/edit",

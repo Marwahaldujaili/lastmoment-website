@@ -120,44 +120,49 @@ export const updateCart = async (req, res) => {
 };
 
 //view cart
+// Assuming you're using Express and this is part of your cart controller.
+
 export const viewCart = async (req, res) => {
   const { sessionId } = req.params;
 
   try {
-    const cart = await Cart.findOne({ sessionId });
+    let cart = await Cart.findOne({ sessionId });
+
     if (!cart) {
       return res
         .status(404)
         .json({ success: false, message: "Cart not found" });
     }
 
-    // Initialize an array to hold the populated items and calculate total price
-    let totalPrice = 0;
+    // Manually populate each item based on its productType
     const populatedItems = await Promise.all(
       cart.items.map(async (item) => {
-        const productModel =
+        // Determine the model based on the productType
+        const model =
           item.productType === "CleaningProduct" ? CleaningProduct : Perfume;
-        const productDetails = await productModel
-          .findById(item.productId)
-          .lean();
-
-        // Calculate the total price
-        totalPrice += item.quantity * item.price;
+        const productDetails = await model.findById(item.productId).lean();
 
         return {
-          ...item,
-          productDetails,
+          ...item._doc,
+          productDetails, // Add the fetched product details to the item
         };
       })
     );
 
-    const populatedCart = {
-      ...cart.toObject(),
-      items: populatedItems,
-      totalPrice, // Add the total price to the response
-    };
+    // Calculate total price if needed
+    const totalPrice = populatedItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
 
-    res.status(200).json({ success: true, cart: populatedCart });
+    res.json({
+      success: true,
+      cart: {
+        ...cart._doc,
+        items: populatedItems,
+        totalPrice,
+      },
+    });
   } catch (error) {
     console.error("View Cart Error:", error);
     res.status(500).json({ success: false, error: error.message });

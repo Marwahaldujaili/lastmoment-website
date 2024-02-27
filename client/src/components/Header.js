@@ -94,11 +94,11 @@ function Header() {
                 Contact Us
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/login" onClick={() => setMenuOpen(false)}>
                 Login
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </header>

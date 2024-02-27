@@ -36,7 +36,7 @@ export const createPerfume = async (req, res) => {
 };
 
 // View all Perfume Products
-export const viewPerfume = async (req, res) => {
+export const viewAllPerfumes = async (req, res) => {
   try {
     const allPerfumes = await Perfume.find();
     const productsWithFullPath = allPerfumes.map((product) => ({

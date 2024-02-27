@@ -16,4 +16,12 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+  .link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .link:hover {
+    color: yourHoverColor; /* Replace 'yourHoverColor' with the color you want on hover */
+  }
 }

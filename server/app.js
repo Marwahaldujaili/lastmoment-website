@@ -18,7 +18,10 @@ app.use(cookieParser());
 
 app.use(
   cors((req, callback) => {
-    const allowedOrigins = ["https://lastmoment-testing.vercel.app"]; // List your origins
+    const allowedOrigins = [
+      "https://lastmoment-testing.vercel.app",
+      "http://localhost:3000",
+    ]; // List your origins
     const origin = req.header("Origin");
     let corsOptions = { origin: false }; // Disallow CORS by default
 

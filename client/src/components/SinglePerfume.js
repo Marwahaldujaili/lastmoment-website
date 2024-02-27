@@ -63,10 +63,14 @@ const SinglePerfume = () => {
       <h1>{perfume.productName}</h1>
       <Box
         sx={{
-          maxWidth: 800,
+          maxWidth: {
+            xs: 400, // max-width of 400px on extra-small devices (mobile)
+            sm: 600, // max-width of 600px on small devices (tablets)
+            md: 800, // max-width of 800px on medium devices and up (desktops)
+          },
           m: "auto",
           mt: 1,
-          p: 1,
+          p: 3,
           boxShadow: 3,
           bgcolor: "white",
         }}
@@ -93,10 +97,16 @@ const SinglePerfume = () => {
               Price: {perfume.price} AED
             </Typography>
             <Button
-              variant="contained"
-              color="primary"
               onClick={handleAddToCart}
-              sx={{ mt: 2 }}
+              sx={{
+                mt: 2,
+                backgroundColor: "#f05b3f",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "#8c3027",
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
+                },
+              }}
             >
               Add to Cart
             </Button>

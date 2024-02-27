@@ -18,16 +18,14 @@ import useScrollToTop from "./components/UseScrollToTop";
 import SinglePerfume from "./components/SinglePerfume";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Fab from "@mui/material/Fab";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
+import { useNavigate } from "react-router-dom";
 import Cart from "../src/pages/Cart";
 
 function App() {
   useScrollToTop();
   const navigate = useNavigate();
-
-  // Function to navigate to the cart view
   const goToCart = () => {
-    navigate("/cart"); // Assuming '/cart' is your route to view the cart
+    navigate("/cart");
   };
 
   return (
@@ -51,11 +49,19 @@ function App() {
           <Route path="/cart" element={<Cart />} />
         </Routes>
       </>
-      {/* Floating Action Button */}
       <Fab
-        color="primary"
         aria-label="view cart"
-        style={{ position: "fixed", right: 20, bottom: 20 }}
+        sx={{
+          position: "fixed",
+          right: 20,
+          bottom: 20,
+          backgroundColor: "#f05b3f",
+          color: "white",
+          "&:hover": {
+            backgroundColor: "#8c3027",
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.25)",
+          },
+        }}
         onClick={goToCart}
       >
         <ShoppingCartIcon />

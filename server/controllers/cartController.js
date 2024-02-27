@@ -191,3 +191,62 @@ export const clearCart = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+export const increaseCartItemQuantity = async (req, res) => {
+  const { sessionId, productId } = req.body;
+
+  try {
+    const cart = await Cart.findOne({ sessionId });
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Cart not found" });
+    }
+
+    const item = cart.items.find((item) => item.productId.equals(productId));
+    if (item) {
+      item.quantity += 1;
+      await cart.save();
+      res.json({ success: true, message: "Item quantity increased", cart });
+    } else {
+      return res
+        .status(404)
+        .json({ success: false, message: "Item not found in cart" });
+    }
+  } catch (error) {
+    console.error("Error increasing item quantity:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+export const decreaseCartItemQuantity = async (req, res) => {
+  const { sessionId, productId } = req.body;
+
+  try {
+    const cart = await Cart.findOne({ sessionId });
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Cart not found" });
+    }
+
+    const itemIndex = cart.items.findIndex((item) =>
+      item.productId.equals(productId)
+    );
+    if (itemIndex !== -1 && cart.items[itemIndex].quantity > 1) {
+      cart.items[itemIndex].quantity -= 1;
+      await cart.save();
+      res.json({ success: true, message: "Item quantity decreased", cart });
+    } else if (cart.items[itemIndex].quantity === 1) {
+      // Optionally remove item if quantity becomes 0
+      cart.items.splice(itemIndex, 1);
+      await cart.save();
+      res.json({ success: true, message: "Item removed from cart", cart });
+    } else {
+      return res
+        .status(404)
+        .json({ success: false, message: "Item not found in cart" });
+    }
+  } catch (error) {
+    console.error("Error decreasing item quantity:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};

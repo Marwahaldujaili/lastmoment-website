@@ -4,6 +4,8 @@ import {
   updateCart,
   viewCart,
   clearCart,
+  increaseCartItemQuantity,
+  decreaseCartItemQuantity,
 } from "../controllers/cartController.js";
 import {
   createCheckoutSession,
@@ -17,6 +19,9 @@ const router = express.Router();
 router.post("/add", addToCart);
 
 router.post("/update", updateCart);
+
+router.post("/increase", increaseCartItemQuantity);
+router.post("/decrease", decreaseCartItemQuantity);
 
 // View cart
 router.get("/view/:sessionId", viewCart);

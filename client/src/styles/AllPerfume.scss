@@ -1,6 +1,8 @@
 @import "./base";
 
 .perfume-container {
+  width: 80%;
+  margin: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -8,12 +10,15 @@
   align-items: center;
   h1 {
     @include pageHeader;
-    // font-size: 1.2rem;
   }
 
   .perfume-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+  }
+  .link {
+    text-decoration: none;
+    color: inherit;
   }
 }

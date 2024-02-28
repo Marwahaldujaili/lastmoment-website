@@ -8,27 +8,26 @@ header {
   padding: 10px;
   text-align: center;
   display: flex;
-  height: 65px;
+  height: 80px;
   align-items: center;
   justify-content: space-between;
   background-color: $blk1;
   margin-bottom: 200px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-
-  @include headings;
-
+  a {
+    @include headings;
+  }
   .logo {
-    font-weight: bold;
     a {
       img {
-        width: 200px;
+        width: 300px;
       }
     }
   }
 
   .burger-menu {
     cursor: pointer;
-    font-size: 60px;
+    font-size: 80px;
     transition: transform 0.3s;
 
     span {

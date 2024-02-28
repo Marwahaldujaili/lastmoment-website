@@ -1,12 +1,14 @@
 @import "./base";
 
 .about-container {
+  width: 80%;
+  margin: auto;
   h1 {
     @include pageHeader;
   }
   p {
     color: $white;
-    text-align: center;
+    text-align: justify;
     padding: 10px 40px;
     font-family: "Roboto", sans-serif;
     font-size: 1rem;

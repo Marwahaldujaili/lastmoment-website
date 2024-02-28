@@ -31,7 +31,6 @@ const upload = multer({
   },
 });
 
-
 router.post(
   "/new",
   authenticateAdmin,
@@ -51,9 +50,10 @@ router.put(
   ]),
   editCleaningProduct
 );
+router.get("/viewall", viewAllCleaning);
 
-router.get("/:productId/view", getSingleCleaningProduct);
-router.get("/view", viewAllCleaning);
+router.get("/:productId", getSingleCleaningProduct);
+
 router.delete("/:productId/delete", authenticateAdmin, deleteCleaningProduct);
 
 export default router;

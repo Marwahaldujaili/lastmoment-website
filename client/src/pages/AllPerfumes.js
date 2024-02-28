@@ -1,33 +1,31 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import {
+  Grid,
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardContent,
+  Typography,
+  Box,
+} from "@mui/material";
 import "../styles/AllPerfume.scss";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import Collapse from "@mui/material/Collapse";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Modal, Box } from "@mui/material";
-
-const apiUrl = process.env.REACT_APP_API_ENDPOINT;
 
 const AllPerfumes = () => {
   const [perfumes, setPerfumes] = useState([]);
-  const [expandedId, setExpandedId] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchPerfumes = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${apiUrl}/product/perfume/view`);
-        if (!response.ok) throw new Error("Failed to fetch");
+        const response = await fetch(
+          `${process.env.REACT_APP_API_ENDPOINT}/product/perfume/viewall`
+        );
         const data = await response.json();
         setPerfumes(data.data);
       } catch (error) {
-        setError(error.message);
+        console.error("Failed to fetch perfumes:", error);
       } finally {
         setIsLoading(false);
       }
@@ -35,115 +33,61 @@ const AllPerfumes = () => {
 
     fetchPerfumes();
   }, []);
-  const handleExpandClick = (id) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
 
   return (
     <div className="perfume-container">
-      <h1>Perfume Products</h1>
-      <div className="perfume-grid">
-        {perfumes.map((perfume) => (
-          <Card
-            key={perfume._id}
-            sx={{
-              minWidth: 100,
-              maxWidth: { xs: 200, md: 400 },
-              margin: "10px",
-              position: "relative",
-              "@media (min-width:1024px)": {
-                maxWidth: 400,
-              },
-            }}
-          >
-            <CardMedia
-              component="img"
-              height="300"
-              image={perfume.mainImage}
-              alt={perfume.productName}
-              onClick={() => {
-                setSelectedImage(perfume.mainImage);
-                setOpenModal(true);
-              }}
-              style={{ cursor: "zoom-in" }}
-            />
-            <CardContent
-              sx={{
-                backgroundColor: "whitesmoke",
-              }}
-            >
-              <Typography
-                gutterBottom
-                variant="h5"
-                component="div"
-                onClick={() => handleExpandClick(perfume._id)}
-                style={{ cursor: "pointer" }}
-              >
-                {perfume.productName} <br />
-                <ExpandMoreIcon />
-              </Typography>
-              <Collapse
-                in={expandedId === perfume._id}
-                timeout="auto"
-                unmountOnExit
-              >
-                <Typography variant="body2" color="text.secondary">
-                  <b>Capacity:</b> {perfume.capacity}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  <b>Price:</b> {perfume.price} AED
-                </Typography>
-                {perfume.description && (
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    style={{ whiteSpace: "pre-line" }}
+      <h1>Our Perfumes</h1>
+      <Box sx={{ flexGrow: 1, p: 3 }}>
+        {isLoading ? (
+          <Typography>Loading...</Typography>
+        ) : (
+          <Grid container spacing={4}>
+            {perfumes.map((perfume) => (
+              <Grid item xs={12} sm={6} md={4} key={perfume._id}>
+                <Card
+                  sx={{
+                    minWidth: 100,
+                    maxWidth: { xs: 200, md: 400 },
+                    margin: "10px",
+                    position: "relative",
+                    transition:
+                      "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      boxShadow: "0px 10px 15px rgba(0,0,0,0.3)",
+                    },
+                    "@media (min-width:1024px)": {
+                      maxWidth: 400,
+                    },
+                  }}
+                >
+                  <Link
+                    to={`/perfume/${perfume._id}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    <b>Aromatic Bases:</b> <br />
-                    {perfume.description}
-                  </Typography>
-                )}
-              </Collapse>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      <Modal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        aria-labelledby="image-modal-title"
-        aria-describedby="image-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-            "@media (min-width:1024px)": {
-              width: 600,
-              p: 6,
-            },
-          }}
-        >
-          <img
-            src={selectedImage}
-            alt="Zoomed In"
-            style={{
-              width: "100%",
-              maxHeight: "80vh",
-              "@media (min-width:1024px)": {
-                maxHeight: "90vh",
-              },
-            }}
-          />
-        </Box>
-      </Modal>
+                    <CardActionArea>
+                      <CardMedia
+                        component="img"
+                        height="320"
+                        image={perfume.mainImage}
+                        alt={perfume.productName}
+                      />
+                      <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                          {perfume.productName}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {perfume.price} AED
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Link>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Box>
     </div>
   );
 };

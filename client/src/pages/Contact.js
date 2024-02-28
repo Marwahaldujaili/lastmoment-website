@@ -24,7 +24,9 @@ const Contact = () => {
           flexDirection: "row",
           flexWrap: "wrap",
           justifyContent: "space-around",
-          width: "100%", // Ensures the container takes the full width to properly space the cards
+          width: "80%",
+          margin: "auto",
+          marginTop: "200px",
         },
       }}
     >
@@ -36,6 +38,14 @@ const Contact = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+          "&:hover": {
+            transform: "scale(1.05)",
+            boxShadow: "0px 10px 15px rgba(0,0,0,0.3)",
+          },
+          "@media (min-width:1024px)": {
+            maxWidth: 400,
+          },
         }}
       >
         <CardContent
@@ -45,7 +55,7 @@ const Contact = () => {
             alignItems: "center",
           }}
         >
-          <Typography gutterBottom variant="h5" component="div" color="#8c3027">
+          <Typography gutterBottom variant="h5" component="div" color="#f05b3f">
             Instagram
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -79,6 +89,14 @@ const Contact = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+          "&:hover": {
+            transform: "scale(1.05)",
+            boxShadow: "0px 10px 15px rgba(0,0,0,0.3)",
+          },
+          "@media (min-width:1024px)": {
+            maxWidth: 400,
+          },
         }}
       >
         <CardContent
@@ -88,7 +106,7 @@ const Contact = () => {
             alignItems: "center",
           }}
         >
-          <Typography gutterBottom variant="h5" component="div" color="#8c3027">
+          <Typography gutterBottom variant="h5" component="div" color="#f05b3f">
             WhatsApp
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -122,6 +140,14 @@ const Contact = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+          "&:hover": {
+            transform: "scale(1.05)",
+            boxShadow: "0px 10px 15px rgba(0,0,0,0.3)",
+          },
+          "@media (min-width:1024px)": {
+            maxWidth: 400,
+          },
         }}
       >
         <CardContent
@@ -131,7 +157,7 @@ const Contact = () => {
             alignItems: "center",
           }}
         >
-          <Typography gutterBottom variant="h5" component="div" color="#8c3027">
+          <Typography gutterBottom variant="h5" component="div" color="#f05b3f">
             Email
           </Typography>
           <Typography variant="body2" color="text.secondary">

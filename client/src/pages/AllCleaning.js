@@ -1,36 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../styles/AllCleaning.scss";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Modal, Box } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const apiUrl = process.env.REACT_APP_API_ENDPOINT;
 
 const AllCleaning = () => {
   const [cleaningProducts, setCleaningProducts] = useState([]);
-  const [expandedId, setExpandedId] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState("");
   const [groupedProducts, setGroupedProducts] = useState({});
 
   useEffect(() => {
     const fetchCleaningProducts = async () => {
       try {
-        const response = await fetch(`${apiUrl}/product/cleaning/view`);
+        const response = await fetch(`${apiUrl}/product/cleaning/viewall`);
         const data = await response.json();
-        const productsWithImageState = data.data.map((product) => ({
-          ...product,
-          currentImage: "mainImage",
-        }));
-        setCleaningProducts(productsWithImageState);
+        setCleaningProducts(data.data);
       } catch (error) {
         console.error("Error fetching cleaning products:", error);
       }
@@ -40,44 +28,23 @@ const AllCleaning = () => {
   }, []);
 
   useEffect(() => {
-    const groupByProductName = cleaningProducts.reduce((acc, product) => {
-      const key = product.productName;
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(product);
-      return acc;
-    }, {});
-
-    setGroupedProducts(groupByProductName);
-  }, [cleaningProducts]);
-
-  const handleExpandClick = (id) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
-
-  const toggleImage = (id) => {
-    setCleaningProducts(
-      cleaningProducts.map((product) => {
-        if (product._id === id) {
-          const hasDetailsImage =
-            product.detailsImage && product.detailsImage.trim() !== "";
-          return {
-            ...product,
-            currentImage:
-              product.currentImage === "mainImage" && hasDetailsImage
-                ? "detailsImage"
-                : "mainImage",
-          };
+    if (Array.isArray(cleaningProducts) && cleaningProducts.length > 0) {
+      const groupByProductName = cleaningProducts.reduce((acc, product) => {
+        const key = product.productName;
+        if (!acc[key]) {
+          acc[key] = [];
         }
-        return product;
-      })
-    );
-  };
+        acc[key].push(product);
+        return acc;
+      }, {});
+
+      setGroupedProducts(groupByProductName);
+    }
+  }, [cleaningProducts]);
 
   return (
     <div className="cleaning-prod-container">
-      <h2>Cleaning Products</h2>
+      <h2>Our Cleaning Products</h2>
       {Object.entries(groupedProducts).map(([productName, products]) => (
         <div key={productName}>
           <h3>{productName}</h3>
@@ -87,128 +54,46 @@ const AllCleaning = () => {
                 key={product._id}
                 sx={{
                   minWidth: 200,
-                  maxWidth: { xs: 200, md: 600 },
+                  maxWidth: { xs: 400, md: 600 },
                   margin: "10px",
                   position: "relative",
+                  transition:
+                    "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                    boxShadow: "0px 10px 15px rgba(0,0,0,0.3)",
+                  },
                   "@media (min-width:1024px)": {
-                    width: 400,
-                    maxWidth: 600,
+                    maxWidth: 400,
                   },
                 }}
               >
-                <CardActionArea>
-                  <div className="image-container">
+                <Link
+                  to={`/cleaning/${product._id}`}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <CardActionArea>
                     <CardMedia
                       component="img"
-                      height="300"
-                      image={product[product.currentImage]}
-                      alt={`${product.productName} - ${
-                        product.currentImage === "mainImage"
-                          ? "Main"
-                          : "Details"
-                      }`}
-                      onClick={() => {
-                        setSelectedImage(product[product.currentImage]);
-                        setOpenModal(true);
-                      }}
-                      style={{
-                        cursor: "zoom-in",
-                        height: { xs: 200, md: 400 },
-                        width: { xs: 200, md: 400 },
-                      }}
+                      height="340"
+                      image={product.mainImage}
+                      alt={product.productName}
                     />
-                    <IconButton
-                      className="image-switch-icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleImage(product._id);
-                      }}
-                      sx={{
-                        position: "absolute",
-                        top: "50%",
-                        right: "0%",
-                        transform: "translateY(-50%)",
-                      }}
-                    >
-                      {product.currentImage === "mainImage" ? (
-                        <ArrowForwardIosIcon />
-                      ) : (
-                        <ArrowBackIosIcon />
-                      )}
-                    </IconButton>
-                  </div>
-                  <CardContent
-                    sx={{
-                      backgroundColor: "whitesmoke",
-                    }}
-                  >
-                    {" "}
-                    <Typography
-                      gutterBottom
-                      variant="body2"
-                      component="div"
-                      onClick={() => handleExpandClick(product._id)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {product.scent} {product.productName}
-                      <ExpandMoreIcon />
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <Collapse
-                  in={expandedId === product._id}
-                  timeout="auto"
-                  unmountOnExit
-                >
-                  <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                      Scent: {product.scent}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Price: {product.pricePerPiece} AED
-                    </Typography>
-                  </CardContent>
-                </Collapse>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {product.productName}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {product.pricePerPiece} AED
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Link>
               </Card>
             ))}
           </div>
         </div>
       ))}
-      <Modal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        aria-labelledby="image-modal-title"
-        aria-describedby="image-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-            "@media (min-width:1024px)": {
-              width: 600,
-              p: 6,
-            },
-          }}
-        >
-          <img
-            src={selectedImage}
-            alt="Zoomed In"
-            style={{
-              width: "100%",
-              maxHeight: "80vh",
-              "@media (min-width:1024px)": {
-                maxHeight: "90vh",
-              },
-            }}
-          />
-        </Box>
-      </Modal>
     </div>
   );
 };

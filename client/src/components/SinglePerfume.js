@@ -1,13 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Typography, Box, Grid, Button } from "@mui/material";
-import { getSessionId } from "../utils/sessionUtils"; // Adjust the path as necessary
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  Typography,
+  Box,
+  Grid,
+  Button,
+  Modal,
+  IconButton,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+import { getSessionId } from "../utils/sessionUtils";
 
 const SinglePerfume = () => {
   const { perfumeId } = useParams();
   const [perfume, setPerfume] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
 
+  const handleBack = () => {
+    navigate(-1);
+  };
   useEffect(() => {
     setIsLoading(true);
     fetch(`${process.env.REACT_APP_API_ENDPOINT}/product/perfume/${perfumeId}`)
@@ -23,12 +38,12 @@ const SinglePerfume = () => {
   }, [perfumeId]);
 
   const handleAddToCart = async () => {
-    const sessionId = getSessionId(); // Retrieve or generate a session ID
+    const sessionId = getSessionId();
 
     const payload = {
       sessionId,
       productId: perfumeId,
-      quantity: 1, // Example quantity
+      quantity: 1,
       productType: "perfume",
     };
 
@@ -55,6 +70,20 @@ const SinglePerfume = () => {
     }
   };
 
+  const toggleModal = () => setOpenModal(!openModal);
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    maxHeight: "100vh",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+    outline: "none",
+  };
+
   if (isLoading) return <p>Loading perfume details...</p>;
   if (!perfume) return <p>Perfume not found.</p>;
 
@@ -63,6 +92,7 @@ const SinglePerfume = () => {
       <h1>{perfume.productName}</h1>
       <Box
         sx={{
+          position: "relative",
           maxWidth: {
             xs: 400,
             sm: 600,
@@ -76,12 +106,34 @@ const SinglePerfume = () => {
           bgcolor: "white",
         }}
       >
+        <IconButton
+          sx={{
+            position: "absolute",
+            top: 8,
+            left: 8,
+            color: "white",
+            backgroundColor: "#f05b3f",
+            "&:hover": {
+              backgroundColor: "#8c3027",
+              color: "white",
+            },
+          }}
+          onClick={handleBack}
+        >
+          <ArrowBackIcon />
+        </IconButton>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
             <img
               src={perfume.mainImage}
               alt={perfume.productName}
-              style={{ width: "100%", height: "auto", display: "block" }}
+              style={{
+                cursor: "zoom-in",
+                width: "100%",
+                height: "auto",
+                display: "block",
+              }}
+              onClick={toggleModal}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -114,6 +166,32 @@ const SinglePerfume = () => {
           </Grid>
         </Grid>
       </Box>
+      <Modal
+        open={openModal}
+        onClose={toggleModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <IconButton
+            aria-label="close"
+            onClick={toggleModal}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <img
+            src={perfume.mainImage}
+            alt={perfume.productName}
+            style={{ width: "100%", height: "80%", display: "block" }}
+          />
+        </Box>
+      </Modal>
     </div>
   );
 };

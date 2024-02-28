@@ -64,13 +64,14 @@ const SinglePerfume = () => {
       <Box
         sx={{
           maxWidth: {
-            xs: 400, // max-width of 400px on extra-small devices (mobile)
-            sm: 600, // max-width of 600px on small devices (tablets)
-            md: 800, // max-width of 800px on medium devices and up (desktops)
+            xs: 400,
+            sm: 600,
+            md: 800,
           },
+          maxHeight: "75%",
           m: "auto",
           mt: 1,
-          p: 3,
+          p: 1,
           boxShadow: 3,
           bgcolor: "white",
         }}

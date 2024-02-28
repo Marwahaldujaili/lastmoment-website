@@ -12,9 +12,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getSessionId } from "../utils/sessionUtils";
 
-const SinglePerfume = () => {
-  const { perfumeId } = useParams();
-  const [perfume, setPerfume] = useState(null);
+const SingleCleaningProduct = () => {
+  const { productId } = useParams();
+  const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
@@ -24,26 +24,28 @@ const SinglePerfume = () => {
   };
   useEffect(() => {
     setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API_ENDPOINT}/product/perfume/${perfumeId}`)
+    fetch(`${process.env.REACT_APP_API_ENDPOINT}/product/cleaning/${productId}`)
       .then((res) => res.json())
       .then((data) => {
-        setPerfume(data.data);
+        setProduct(data.data);
+        console.log(data.data);
+
         setIsLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching perfume details:", err);
+        console.error("Error fetching cleaning product details:", err);
         setIsLoading(false);
       });
-  }, [perfumeId]);
+  }, [productId]);
 
   const handleAddToCart = async () => {
     const sessionId = getSessionId();
 
     const payload = {
       sessionId,
-      productId: perfumeId,
+      productId: productId,
       quantity: 1,
-      productType: "perfume",
+      productType: "cleaningProduct",
     };
 
     try {
@@ -59,13 +61,13 @@ const SinglePerfume = () => {
       );
       const data = await response.json();
       if (data.success) {
-        alert("Perfume added to cart successfully!");
+        alert("Product added to cart successfully!");
       } else {
-        alert(data.message || "Failed to add perfume to cart.");
+        alert(data.message || "Failed to add product to cart.");
       }
     } catch (error) {
-      console.error("Error adding perfume to cart:", error);
-      alert("Error adding perfume to cart.");
+      console.error("Error adding product to cart:", error);
+      alert("Error adding product to cart.");
     }
   };
 
@@ -83,12 +85,12 @@ const SinglePerfume = () => {
     outline: "none",
   };
 
-  if (isLoading) return <p>Loading perfume details...</p>;
-  if (!perfume) return <p>Perfume not found.</p>;
+  if (isLoading) return <p>Loading cleaning product details...</p>;
+  if (!product) return <p>Cleaning product not found.</p>;
 
   return (
     <div className="perfume-container">
-      <h1>{perfume.productName}</h1>
+      <h1>{product.productName}</h1>
       <Box
         sx={{
           position: "relative",
@@ -124,8 +126,8 @@ const SinglePerfume = () => {
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
             <img
-              src={perfume.mainImage}
-              alt={perfume.productName}
+              src={product.mainImage}
+              alt={product.productName}
               style={{
                 cursor: "zoom-in",
                 width: "100%",
@@ -137,16 +139,19 @@ const SinglePerfume = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography gutterBottom variant="h6" component="h2">
-              {perfume.productName}
+              {product.productName}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
-              Capacity: {perfume.capacity}ml
+              Scent: {product.scent}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
-              Description: {perfume.description}
+              Capacity: {product.capacity}ml
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
-              Price: {perfume.price} AED
+              Price Per Carton: {product.pricePerCarton} AED
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
+              Price Per Piece: {product.pricePerPiece} AED
             </Typography>
             <Button
               onClick={handleAddToCart}
@@ -185,8 +190,8 @@ const SinglePerfume = () => {
             <CloseIcon />
           </IconButton>
           <img
-            src={perfume.mainImage}
-            alt={perfume.productName}
+            src={product.mainImage}
+            alt={product.productName}
             style={{ width: "100%", height: "80%", display: "block" }}
           />
         </Box>
@@ -195,4 +200,4 @@ const SinglePerfume = () => {
   );
 };
 
-export default SinglePerfume;
+export default SingleCleaningProduct;

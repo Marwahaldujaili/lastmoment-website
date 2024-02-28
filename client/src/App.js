@@ -20,6 +20,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Fab from "@mui/material/Fab";
 import { useNavigate } from "react-router-dom";
 import Cart from "../src/pages/Cart";
+import SingleCleaningProduct from "./components/SingleCleaningProduct";
 
 function App() {
   useScrollToTop();
@@ -41,6 +42,10 @@ function App() {
           <Route path="/allperfumes" element={<AllPerfumes />} />
           <Route path="/perfume/:perfumeId" element={<SinglePerfume />} />
           <Route path="/allcleaning" element={<AllCleaning />} />
+          <Route
+            path="/cleaning/:productId"
+            element={<SingleCleaningProduct />}
+          />
           <Route path="/login" element={<AdminLogin />} />
           <Route path="/admin/profile" element={<AdminProfile />} />
           <Route path="/editadmin" element={<EditAdmin />} />

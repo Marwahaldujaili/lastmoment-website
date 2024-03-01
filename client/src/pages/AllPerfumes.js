@@ -10,7 +10,6 @@ import {
   Box,
   Fab,
 } from "@mui/material";
-import { Tabs, Tab } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import "../styles/AllPerfume.scss";
 

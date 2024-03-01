@@ -82,7 +82,7 @@ const AllCleaning = () => {
     const element = document.getElementById(categoryKey);
 
     if (element) {
-      const headerOffset = 80; // Height of the tabs bar, adjust this value as needed
+      const headerOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition =
         elementPosition + window.pageYOffset - headerOffset;
@@ -151,7 +151,6 @@ const AllCleaning = () => {
                   ))}
                 </Tabs>
               </Box>
-              {/* {productName} */}
             </Typography>
             <div className="cleaning-prod">
               {products.map((product) => (

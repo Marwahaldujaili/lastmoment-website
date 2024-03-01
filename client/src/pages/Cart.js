@@ -14,9 +14,12 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { getSessionId } from "../utils/sessionUtils";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartDetails, setCartDetails] = useState({
+    items: [],
+    totalPrice: 0,
+    deliveryCost: 25,
+  });
   const [isLoading, setIsLoading] = useState(true);
-  const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
 
   const fetchCartItems = async () => {
@@ -28,8 +31,11 @@ const Cart = () => {
       );
       const data = await response.json();
       if (data.success && data.cart) {
-        setCartItems(data.cart.items);
-        setTotalPrice(data.cart.totalPrice);
+        setCartDetails({
+          items: data.cart.items,
+          totalPrice: data.cart.totalPrice,
+          deliveryCost: data.cart.deliveryCost,
+        });
       } else {
         console.error("Failed to fetch cart items:", data.message);
       }
@@ -63,6 +69,7 @@ const Cart = () => {
       console.error("Error updating item quantity:", error);
     }
   };
+
   const handleCheckout = async () => {
     const sessionId = getSessionId();
     try {
@@ -75,14 +82,16 @@ const Cart = () => {
         }
       );
       const { url } = await response.json();
-      window.location.href = url; // Redirect the user to Stripe's hosted checkout page
+      window.location.href = url;
     } catch (error) {
       console.error("Checkout failed:", error);
     }
   };
 
+  const finalTotalPrice = cartDetails.totalPrice;
+
   if (isLoading) return <Typography>Loading cart...</Typography>;
-  if (!cartItems.length) {
+  if (!cartDetails.items.length) {
     return (
       <div className="perfume-container">
         <h1>Shopping Cart</h1>
@@ -120,7 +129,7 @@ const Cart = () => {
         }}
       >
         <List>
-          {cartItems.map((item, index) => (
+          {cartDetails.items.map((item, index) => (
             <ListItem
               key={index}
               sx={{
@@ -140,7 +149,7 @@ const Cart = () => {
                   sx={{
                     marginRight: 1,
                     "&:hover": {
-                      color: "red", // Change icon color to red on hover
+                      color: "red",
                     },
                   }}
                 >
@@ -153,7 +162,7 @@ const Cart = () => {
                   sx={{
                     marginLeft: 1,
                     "&:hover": {
-                      color: "red", // Change icon color to red on hover
+                      color: "red",
                     },
                   }}
                 >
@@ -162,29 +171,33 @@ const Cart = () => {
               </Box>
             </ListItem>
           ))}
+          <ListItem sx={{ display: "flex", justifyContent: "space-between" }}>
+            <ListItemText primary="Delivery Cost within UAE" />
+            <Typography>{cartDetails.deliveryCost} AED</Typography>
+          </ListItem>
         </List>
 
-        <Typography variant="h6">Total Price: {totalPrice} AED</Typography>
+        <Typography variant="h6">Total: {finalTotalPrice} AED</Typography>
         <Box
           sx={{
             display: "flex",
             justifyContent: "flex-end",
             mt: 2,
-            gap: 2, // Adds space between buttons
+            gap: 2,
           }}
         >
           <Button
-            variant="outlined" // Style as you prefer
+            variant="outlined"
             sx={{
               borderColor: "#f05b3f",
               color: "#f05b3f",
               "&:hover": {
-                backgroundColor: "#8c3027", // Light red background on hover
+                backgroundColor: "#8c3027",
                 borderColor: "#8c3027",
                 color: "white",
               },
             }}
-            onClick={() => navigate("/products")} // Adjust the path as needed for your app
+            onClick={() => navigate("/products")}
           >
             Continue Shopping
           </Button>
@@ -198,7 +211,7 @@ const Cart = () => {
                 boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
               },
             }}
-            onClick={handleCheckout} // Add this line
+            onClick={handleCheckout}
           >
             Checkout
           </Button>

@@ -3,14 +3,12 @@ import Perfume from "../models/PerfumeProducts.js";
 import Cart from "../models/Cart.js";
 
 //fetch product details and price
-
 export const fetchProductDetails = async (productId, productType) => {
-  // Normalize the productType to lowercase
   const normalizedProductType = productType.toLowerCase();
 
   let productDetails = {};
   switch (normalizedProductType) {
-    case "cleaningproduct": // Now expecting lowercase
+    case "cleaningproduct":
       const cleaningProduct = await CleaningProduct.findById(productId);
       if (!cleaningProduct) throw new Error("Cleaning product not found");
       productDetails = {
@@ -19,7 +17,7 @@ export const fetchProductDetails = async (productId, productType) => {
         ...cleaningProduct.toObject(),
       };
       break;
-    case "perfume": // Already lowercase
+    case "perfume":
       const perfume = await Perfume.findById(productId);
       if (!perfume) throw new Error("Perfume product not found");
       productDetails = {
@@ -34,7 +32,7 @@ export const fetchProductDetails = async (productId, productType) => {
   return productDetails;
 };
 
-// Add to Cart Controller
+// Add to Cart
 export const addToCart = async (req, res) => {
   const { sessionId, productId, quantity, productType } = req.body;
 
@@ -51,13 +49,11 @@ export const addToCart = async (req, res) => {
       productId,
       quantity,
       price,
-      productType: productType.charAt(0).toUpperCase() + productType.slice(1), // Ensure correct enum format
+      productType: productType.charAt(0).toUpperCase() + productType.slice(1),
     };
 
-    // Add new item to cart
     cart.items.push(item);
 
-    // Optionally, calculate the total price of the cart after addition
     const totalPrice = cart.items.reduce(
       (acc, currItem) => acc + currItem.price * currItem.quantity,
       0
@@ -91,14 +87,10 @@ export const updateCart = async (req, res) => {
 
     if (itemIndex !== -1) {
       if (quantity <= 0) {
-        // Remove item from cart
         cart.items.splice(itemIndex, 1);
       } else {
-        // Update item quantity
         cart.items[itemIndex].quantity = quantity;
       }
-
-      // Calculate the total price after update
       const totalPrice = cart.items.reduce(
         (acc, currItem) => acc + currItem.price * currItem.quantity,
         0
@@ -120,10 +112,9 @@ export const updateCart = async (req, res) => {
 };
 
 //view cart
-// Assuming you're using Express and this is part of your cart controller.
-
 export const viewCart = async (req, res) => {
   const { sessionId } = req.params;
+  const deliveryCost = 25;
 
   try {
     let cart = await Cart.findOne({ sessionId });
@@ -134,26 +125,20 @@ export const viewCart = async (req, res) => {
         .json({ success: false, message: "Cart not found" });
     }
 
-    // Manually populate each item based on its productType
     const populatedItems = await Promise.all(
       cart.items.map(async (item) => {
-        // Determine the model based on the productType
         const model =
           item.productType === "CleaningProduct" ? CleaningProduct : Perfume;
         const productDetails = await model.findById(item.productId).lean();
-
-        return {
-          ...item._doc,
-          productDetails, // Add the fetched product details to the item
-        };
+        return { ...item._doc, productDetails };
       })
     );
 
-    // Calculate total price if needed
-    const totalPrice = populatedItems.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0
-    );
+    const totalPrice =
+      populatedItems.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      ) + deliveryCost;
 
     res.json({
       success: true,
@@ -161,6 +146,7 @@ export const viewCart = async (req, res) => {
         ...cart._doc,
         items: populatedItems,
         totalPrice,
+        deliveryCost,
       },
     });
   } catch (error) {
@@ -171,7 +157,7 @@ export const viewCart = async (req, res) => {
 
 //clear cart
 export const clearCart = async (req, res) => {
-  const { sessionId } = req.params; // Assuming the sessionId is passed as a URL parameter
+  const { sessionId } = req.params;
 
   try {
     const cart = await Cart.findOne({ sessionId });
@@ -180,8 +166,6 @@ export const clearCart = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Cart not found" });
     }
-
-    // Clear the items array
     cart.items = [];
 
     await cart.save();
@@ -191,6 +175,8 @@ export const clearCart = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+//increase quantity
 export const increaseCartItemQuantity = async (req, res) => {
   const { sessionId, productId } = req.body;
 
@@ -217,6 +203,8 @@ export const increaseCartItemQuantity = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
+//decrease quantity
 export const decreaseCartItemQuantity = async (req, res) => {
   const { sessionId, productId } = req.body;
 
@@ -236,7 +224,6 @@ export const decreaseCartItemQuantity = async (req, res) => {
       await cart.save();
       res.json({ success: true, message: "Item quantity decreased", cart });
     } else if (cart.items[itemIndex].quantity === 1) {
-      // Optionally remove item if quantity becomes 0
       cart.items.splice(itemIndex, 1);
       await cart.save();
       res.json({ success: true, message: "Item removed from cart", cart });

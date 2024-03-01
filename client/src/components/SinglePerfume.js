@@ -11,6 +11,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getSessionId } from "../utils/sessionUtils";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SinglePerfume = () => {
   const { perfumeId } = useParams();
@@ -59,13 +61,13 @@ const SinglePerfume = () => {
       );
       const data = await response.json();
       if (data.success) {
-        alert("Perfume added to cart successfully!");
+        toast.success("Product added to cart successfully!");
       } else {
-        alert(data.message || "Failed to add perfume to cart.");
+        toast.error(data.message || "Failed to add product to cart.");
       }
     } catch (error) {
       console.error("Error adding perfume to cart:", error);
-      alert("Error adding perfume to cart.");
+      toast.error("Error adding product to cart.");
     }
   };
 
@@ -191,6 +193,17 @@ const SinglePerfume = () => {
           />
         </Box>
       </Modal>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

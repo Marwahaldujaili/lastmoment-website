@@ -63,6 +63,23 @@ const Cart = () => {
       console.error("Error updating item quantity:", error);
     }
   };
+  const handleCheckout = async () => {
+    const sessionId = getSessionId();
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/cart/checkout`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId }),
+        }
+      );
+      const { url } = await response.json();
+      window.location.href = url; // Redirect the user to Stripe's hosted checkout page
+    } catch (error) {
+      console.error("Checkout failed:", error);
+    }
+  };
 
   if (isLoading) return <Typography>Loading cart...</Typography>;
   if (!cartItems.length) {
@@ -181,7 +198,7 @@ const Cart = () => {
                 boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
               },
             }}
-            // Add your checkout function or link here
+            onClick={handleCheckout} // Add this line
           >
             Checkout
           </Button>

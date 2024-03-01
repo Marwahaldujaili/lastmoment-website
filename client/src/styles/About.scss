@@ -7,12 +7,18 @@
     @include pageHeader;
   }
   p {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+
     color: $white;
     text-align: justify;
     padding: 10px 40px;
     font-family: "Roboto", sans-serif;
     font-size: 1rem;
     letter-spacing: 1px;
+    transition: background-color 0.3s, color 0.3s;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1); // Slight white tint
+    }
     @media (min-width: 1024px) {
       font-size: 1.2rem;
       margin: auto;

@@ -11,6 +11,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getSessionId } from "../utils/sessionUtils";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SingleCleaningProduct = () => {
   const { productId } = useParams();
@@ -61,13 +63,13 @@ const SingleCleaningProduct = () => {
       );
       const data = await response.json();
       if (data.success) {
-        alert("Product added to cart successfully!");
+        toast.success("Product added to cart successfully!");
       } else {
-        alert(data.message || "Failed to add product to cart.");
+        toast.error(data.message || "Failed to add product to cart.");
       }
     } catch (error) {
       console.error("Error adding product to cart:", error);
-      alert("Error adding product to cart.");
+      toast.error("Error adding product to cart.");
     }
   };
 
@@ -196,6 +198,17 @@ const SingleCleaningProduct = () => {
           />
         </Box>
       </Modal>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />{" "}
     </div>
   );
 };

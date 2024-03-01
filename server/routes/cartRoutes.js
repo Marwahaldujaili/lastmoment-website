@@ -10,6 +10,10 @@ import {
 import {
   createCheckoutSession,
   handleStripeWebhook,
+  getAllOrders,
+  getOrderById,
+  updateOrderStatus,
+  deleteOrder,
 } from "../controllers/checkoutController.js";
 import bodyParser from "body-parser";
 
@@ -38,5 +42,10 @@ router.post(
   bodyParser.raw({ type: "application/json" }),
   handleStripeWebhook
 );
+
+router.get("/", getAllOrders); // List all orders (Admin)
+router.get("/:id", getOrderById); // Get order by ID
+router.put("/:id/status", updateOrderStatus); // Update order status
+router.delete("/:id", deleteOrder); // Delete an order
 
 export default router;

@@ -37,7 +37,7 @@ function AdminProfile() {
     try {
       const response = await fetch(`${apiUrl}/user/admin/logout`, {
         method: "POST",
-        credentials: "include", // Include credentials (cookies) in the request
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

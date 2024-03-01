@@ -112,3 +112,60 @@ export const handleStripeWebhook = async (req, res) => {
   // Acknowledge receipt of the event
   res.json({ received: true });
 };
+// controllers/orderController.js
+
+export const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({});
+    res.json(orders);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching orders", error: error.message });
+  }
+};
+
+export const getOrderById = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    res.json(order);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching order", error: error.message });
+  }
+};
+
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    order.status = req.body.status || order.status;
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating order", error: error.message });
+  }
+};
+
+export const deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    await order.remove();
+    res.json({ message: "Order deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error deleting order", error: error.message });
+  }
+};

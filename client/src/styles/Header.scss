@@ -27,7 +27,7 @@ header {
 
   .burger-menu {
     cursor: pointer;
-    font-size: 80px;
+    font-size: 70px;
     transition: transform 0.3s;
 
     span {
@@ -54,7 +54,7 @@ header {
 
   nav {
     position: fixed;
-    top: 60px;
+    top: 80px;
     right: 0;
     width: 100vw;
     height: 100vh;
@@ -62,6 +62,7 @@ header {
     background-color: $blk1;
     z-index: 99;
     background-size: cover;
+    align-items: center;
 
     ul {
       list-style: none;
@@ -139,7 +140,7 @@ header {
       background-color: none;
       overflow: visible;
       z-index: 33;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
 
       ul {
         flex-direction: row;

@@ -10,8 +10,14 @@
   align-items: center;
   img {
     max-height: 90vh;
+    margin-top: 100px;
+
     @media (min-width: 1024px) {
-      width: 50vw;
+      max-width: 50vw;
+    }
+    @media (max-width: 1023px) {
+      max-width: 80vw;
+      max-height: 50vh;
     }
   }
   p {

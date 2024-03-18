@@ -7,11 +7,19 @@ export const createCheckoutSession = async (req, res) => {
   const { sessionId } = req.body;
 
   try {
+    // Fetch cart and calculate total price including delivery cost
     const cart = await Cart.findOne({ sessionId });
     if (!cart || cart.items.length === 0) {
       return res.status(404).json({ message: "Cart not found or is empty" });
     }
 
+    // Calculate delivery cost (replace with your calculation logic)
+    const deliveryCost = 25; // Example delivery cost
+
+    // Calculate total price including delivery cost
+    const totalPriceWithDelivery = cart.totalPrice + deliveryCost;
+
+    // Construct line items array including delivery cost
     const lineItems = await Promise.all(
       cart.items.map(async (item) => {
         const productDetails = await fetchProductDetails(
@@ -39,11 +47,24 @@ export const createCheckoutSession = async (req, res) => {
       })
     );
 
+    // Add line item for delivery cost
+    lineItems.push({
+      price_data: {
+        currency: "aed",
+        product_data: {
+          name: "Delivery Cost",
+        },
+        unit_amount: Math.round(deliveryCost * 100), // Ensure this is an integer
+      },
+      quantity: 1, // Assuming delivery cost is a fixed fee
+    });
+
+    // Create checkout session with updated line items
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${process.env.FRONT_END}/success?session_id={CHECKOUT_SESSION_ID}`, // Ensure FRONT_END_URL is set in .env
+      success_url: `${process.env.FRONT_END}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.FRONT_END}/cancel`,
     });
 

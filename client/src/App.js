@@ -52,6 +52,7 @@ function App() {
           <Route path="/newcleaningproduct" element={<NewCleaningProduct />} />
           <Route path="/newperfume" element={<NewPerfume />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/cancel" element={<Cart />} />
         </Routes>
       </>
       <Fab

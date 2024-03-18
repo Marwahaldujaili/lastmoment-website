@@ -98,14 +98,7 @@ const AllCleaning = () => {
     <div className="cleaning-prod-container">
       <h2>Our Cleaning Products</h2>
       {isLoading ? (
-        <Typography
-          sx={{
-            color: "ebebeb",
-            fontSize: "24px",
-            textAlign: "center",
-            marginTop: "20px",
-          }}
-        >
+        <Typography sx={{ color: "white", fontSize: "24px" }}>
           Loading...
         </Typography>
       ) : (
@@ -137,9 +130,12 @@ const AllCleaning = () => {
                       },
                     },
                     ".Mui-selected": {
-                      color: "#ebebeb",
+                      color: "white",
                       backgroundColor: "#8c3027",
                       boxShadow: "inset 0 4px 8px rgba(0,0,0,0.2)",
+                    },
+                    ".Mui-selected .MuiTab-label": {
+                      color: "white",
                     },
                     ".MuiTabs-indicator": {
                       backgroundColor: "transparent",

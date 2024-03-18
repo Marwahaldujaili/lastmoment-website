@@ -77,12 +77,11 @@ const SinglePerfume = () => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    maxHeight: "100vh",
+    maxWidth: "90%",
     bgcolor: "background.paper",
+    outline: "none",
     border: "2px solid #000",
     boxShadow: 24,
-    p: 4,
-    outline: "none",
   };
 
   if (isLoading) return <p>Loading perfume details...</p>;
@@ -129,11 +128,10 @@ const SinglePerfume = () => {
               src={perfume.mainImage}
               alt={perfume.productName}
               style={{
-                cursor: "zoom-in",
                 width: "100%",
-                height: "auto",
+                height: "100%",
                 display: "block",
-              }}
+              }} // Adjusted style
               onClick={toggleModal}
             />
           </Grid>
